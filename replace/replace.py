@@ -13,4 +13,4 @@ for i in testwords:
     if testword in testlog:
         # 屏蔽词替换
         testlog = testlog.replace(testword, '*' * len(testword))
-print (testlog)
+print (testlog.encode('utf-8'))
