@@ -2,6 +2,7 @@
 # 获取屏蔽词库
 testfile = open('shieldWords.txt', 'r')
 testwords = testfile.readlines()
+testfile.close()
 # 输入待屏蔽语句
 log = raw_input('press something\n')
 # 待屏蔽词解码
