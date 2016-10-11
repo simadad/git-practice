@@ -1,0 +1,9 @@
+3. 添加ssh key 到github
+
+ On the GitHub site Click “Account Settings” > Click “SSH Keys” > Click “Add SSH key”
+
+点击右上角 扳手图标，然后点击左边菜单的 ssh key， 然后右边页面的 add ssh key
+
+用 kate或者其它文本编辑器打开 id_rsa.puh 文件，复制里面的所有字符 （这里不要使用vi，使用vi复制的key会提示 无效的key，大概是换行的问题）
+
+将复制的 key 粘贴到github的key中，title可不填。 点击     add key 为出现 “无效的 key 提示即可（英文提示）”，前面输入过passphrase的这里也会提示输入。
