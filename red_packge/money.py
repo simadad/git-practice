@@ -49,6 +49,11 @@ def distribute(amount, quantity, average, part):
 while True:
     money = numb('请输入红包总金额：', False)
     count = numb('请输入红包个数: ', True)
+    if count*0.01 < money:
+        pass
+    else:
+        print ('单个红包不能低于0.01元\n')
+        continue
     weight = on_aver(money, count)
     distribute(money, count, weight[0], weight[1])
     # 循环判断
