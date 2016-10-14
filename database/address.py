@@ -112,5 +112,6 @@ while True:
     elif key == str(4):
         data_del()
     else:
+        Database.commit()
         Database.close()
         break
