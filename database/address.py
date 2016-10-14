@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import sqlite3
-import chardet
 Database = sqlite3.connect('address_book.db')
 try:
     Database.execute('''
@@ -14,7 +13,7 @@ except sqlite3.OperationalError:
     pass
 
 
-def insert(data, database=Database, table='contact'):    # 记得将输入参数设置为 str
+def insert(data, database=Database, table='contact'):
     # 数据库写入
     database.execute('''
     insert into %s values(%s);
@@ -45,18 +44,37 @@ def data_in(num):
     emain = '"%s"' % emain
     info = '%s, %s, %s, %s' % (num, name, phone, emain)
     insert(info)
-    print ('*录入成功*')
+    print ('*录入成功*\n')
 
 
 def data_find():
-    pass
+    find = raw_input('查找关键字： ').decode('utf-8')
+    data = select('*').fetchall()
+    have = False
+    print ('ID  姓名    手机     邮箱')
+    for i in data:
+        for j in range(0, 4):
+            if type(i[j]) == unicode:
+                if find in i[j]:
+                    print ('%d   %s %s %s' % (i[0], i[1].encode('utf-8'), i[2], i[3].encode('utf-8')))
+                    have = True
+                    break
+            else:
+                if find in str(i[j]):
+                    print ('%d   %s %s %s' % (i[0], i[1].encode('utf-8'), i[2], i[3].encode('utf-8')))
+                    have = True
+                    break
+    if have:
+        pass
+    else:
+        print ('查询无果')
+    print
 
 
 def data_show():
-    datas = select('*').fetchall()
-    # print (datas.fetchall())
+    data = select('*').fetchall()
     print ('ID  姓名    手机     邮箱')
-    for i in datas:
+    for i in data:
         print ('%d   %s %s %s' % (i[0], i[1].encode('utf-8'), i[2], i[3].encode('utf-8')))
     print
 
@@ -68,10 +86,10 @@ def data_del():
         confirm = raw_input('确定删除此联系人？（Y/N） ：').decode('utf-8')
         if confirm == u'Y':
             delete(del_numb)
-            print ('成功删除')
+            print ('成功删除\n')
             break
         elif confirm == u'N':
-            print ('取消删除')
+            print ('取消删除\n')
             break
         else:
             print ('输入“Y”确认删除，输入“N”取消删除！')
