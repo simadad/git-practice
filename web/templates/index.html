@@ -9,7 +9,7 @@ $def with (movies)
 <p>影片列表</p>
 $for movie in movies:
 	<li>
-	<a href="movie/$movie['id']">$movie['title'].encode('utf-8')</a>
+	<a href="/movie/$movie['id']">$movie['title'].encode('utf-8')</a>
 	</li>
 
 

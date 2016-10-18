@@ -8,6 +8,15 @@ $def with (movies)
 <p>类型：$movies.genres</p>
 <p>年代：$movies.year</p>
 <p>国家：$movies.countries</p>
-<p>导演：$movies.directors</p>
-<p>主演：$movies.casts</p>
+<p>导演：
+$ directors = movies.directors.split(',')
+$for director in directors:
+	<a href='/director/$director'>$director</a>
+</p>
+
+<p>主演：
+$ casts = movies.casts.split(',')
+$for cast in casts:
+    <a href="/cast/$cast">$cast</a>
+</p>
 <p>简介：$movies.summary</p>
