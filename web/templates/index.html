@@ -1,4 +1,4 @@
-$def with (movies)
+$def with (movies, count, key)
 <h4>欢迎来到</h4>
 <h1>Movie Site</h1>
 <hr>
@@ -6,7 +6,19 @@ $def with (movies)
 	<input type='text' name='title' value='请输入关键字' onfocus='this.value=""'/>
 	<input type='submit' value='搜索'/>
 </form>
-<p>影片列表</p>
+<p>
+	<span>影片列表：</span>
+	$if count:
+		<span>共</span>
+		<span><b><u>$count</b></u></span>
+		<span>部电影</span>
+		$if key:
+			<span>与</span>
+			<span><b><i>$key</b></i></span>
+			<span>有关。</span>
+	$else:
+		<span>未找到相关电影</span>
+</p>
 $for movie in movies:
 	<li>
 	<a href="/movie/$movie['id']">$movie['title'].encode('utf-8')</a>

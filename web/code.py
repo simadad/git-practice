@@ -19,14 +19,20 @@ class Index:                                            # 控制函数 Index
     def GET(self):
         print ('index_get')
         movies = db.select('movie')
-        return render.index(movies)
+        count = db.query('select count(*) as count from movie')[0]['count']
+        return render.index(movies, count, None)
 
     def POST(self):
         print ('index_post')
         data = web.input()
+        print type(data)
+        print data.title
         condition = r'title like "%' + data.title + r'%"'   # data.title ?????????
         movies = db.select('movie', where=condition)
-        return render.index(movies)
+        count = db.query('select count(*) as count from movie where ' + condition)[0]['count']
+        print count
+        print type(count)
+        return render.index(movies, count, data.title)
 
 
 class Movie:                                                # 控制函数 Movie
@@ -50,7 +56,8 @@ class Director:
         print (movie_director)
         condition = r'directors like "%' + movie_director + r'%"'
         movies = db.select('movie', where=condition)
-        return render.index(movies)
+        count = db.query('select count(*) as count from movie where ' + condition)[0]['count']
+        return render.index(movies, count, movie_director)
 
 
 class Cast:
@@ -62,7 +69,8 @@ class Cast:
         print (movie_cast)
         condition = r'casts like "%' + movie_cast + r'%"'
         movies = db.select('movie', where=condition)
-        return render.index(movies)
+        count = db.query('select count(*) as count from movie where ' + condition)[0]['count']
+        return render.index(movies, count, movie_cast)
 
 if __name__ == "__main__":
     app.run()
