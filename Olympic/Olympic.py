@@ -50,6 +50,7 @@ def sort(countries, metal):
 # 开始
 olympic_file = open('olympic.txt')
 olympic_content = olympic_file.readlines()
+print(olympic_content)
 li_country = [i.split() for i in olympic_content]                # .中国？？？？
 # 对象集
 countries = [(Country(i[0], int(i[2]), int(i[3]), int(i[4]))) for i in li_country]
