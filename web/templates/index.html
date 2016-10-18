@@ -1,0 +1,15 @@
+$def with (movies)
+<h4>欢迎来到</h4>
+<h1>Movie Site</h1>
+<hr>
+<form action='/' method='POST'>      
+	<input type='text' name='title' value='请输入关键字' onfocus='this.value=""'/>
+	<input type='submit' value='搜索'/>
+</form>
+<p>影片列表</p>
+$for movie in movies:
+	<li>
+	<a href="movie/$movie['id']">$movie['title'].encode('utf-8')</a>
+	</li>
+
+
