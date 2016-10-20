@@ -20,6 +20,7 @@ def insert(data, database=Database, table='contact'):
     database.execute('''
     insert into %s values(null, %s);
     ''' % (table, data))
+    database.commit()
 
 
 def select(data, database=Database, table='contact', condition=None):
@@ -39,6 +40,7 @@ def delete(data, database=Database, table='contact'):
     database.execute('''
     delete from %s where id = %s;
     ''' % (table, data))
+    database.commit()
 
 
 def data_in():
