@@ -6,7 +6,7 @@ Database = sqlite3.connect('address_book.db')
 try:
     Database.execute('''
     create table contact(
-    id  int primary key not null,
+    id  int primary key,
     name    text        not null,
     phone   int         not null,
     email  text        not null);
@@ -18,7 +18,7 @@ except sqlite3.OperationalError:
 def insert(data, database=Database, table='contact'):
     # 数据库写入
     database.execute('''
-    insert into %s values(%s);
+    insert into %s values(null, %s);
     ''' % (table, data))
 
 
@@ -41,7 +41,7 @@ def delete(data, database=Database, table='contact'):
     ''' % (table, data))
 
 
-def data_in(num):
+def data_in():
     print ('*开始录入*')
     name = raw_input('姓名：')
     phone = my_func.numb('手机：')
@@ -56,10 +56,9 @@ def data_in(num):
             break
         else:
             emain = raw_input('格式错误,请重新输入：')
-    print ('联系人ID：%s' % num)
     name = '"%s"' % name
     emain = '"%s"' % emain
-    info = '%s, %s, %s, %s' % (num, name, phone, emain)
+    info = '%s, %s, %s' % (name, phone, emain)
     insert(info)
     print ('*录入成功*\n')
 
@@ -102,7 +101,7 @@ def data_show():
 
 def data_del():
     print ('*开始删除*')
-    del_numb = raw_input('联系人ID：')
+    del_numb = my_func.numb('联系人ID：')
     conditions = 'id == %s' % del_numb
     to_del = select('*', condition=conditions).fetchall()
     if to_del:
@@ -125,13 +124,11 @@ def data_del():
 
 # 开始
 print ('欢迎使用本通讯录')
-ID = 0
 while True:
     print ('您可以：1.录入 2.查找 3.全部显示 4.删除 (回车退出)')
     key = raw_input('请选择操作码：')
     if key == str(1):
-        ID += 1
-        data_in(ID)
+        data_in()
     elif key == str(2):
         data_find()
     elif key == str(3):
