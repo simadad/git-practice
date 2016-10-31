@@ -1,10 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Article</title>
-</head>
-<body>
-	{{ article }}
-</body>
-</html>
+{% extends 'base.html' %}
+{% block title %}Article{% endblock %}
+{% block content %}
+<section>
+	<article>
+		<h3>{{ article }}</h3>
+		<p>{{article.Content}} </p>
+	</article>
+</section>
+<hr />
+<section>
+	<article>
+		<h4>评论</h4>
+		{% for commenter in article.commenter_set.all %}
+			<p>{{ commenter }} </p>
+		{% endfor %}
+	</article>
+	<hr />
+	<article>
+		<h4>添加评论</h4>
+		<form method='POST'>
+		{% csrf_token %}
+			<div>
+				<label>您的昵称：</label>
+				<input type='text' name='author' value='Visitor'></input>
+			</div>
+			<div>
+				<label>您的评论：</label>
+				<textarea name='content'></textarea>
+			</div>
+			<input type='submit' value='提交'></input>
+		</form>
+	</article>
+</section>
+<hr />
+{% endblock %}

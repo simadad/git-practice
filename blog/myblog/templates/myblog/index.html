@@ -1,15 +1,37 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="UTF-8">
-	<title>Index</title>
-</head>
-<body>
-<h1>Welcome to my blog!</h1>
-	{% for article in articles %}
-		<h3><a href='{% url "myblog:article" article.id %}'>{{ article }}</a></h3>
-		<span><b>--{{ article.Author }}</b><i>--{{ article.Pub_date }}</i></span>
-		<p>{{ article.Content }}</p>
-	{% endfor %}
-</body>
-</html>
+{% extends 'base.html' %}
+{% block link %}
+	{% load static %}
+	<link rel='stylesheet' type='text/css' href="{% static 'myblog/index.css' %}" />
+{% endblock %}
+{% block title %}Index{% endblock %}
+
+{% block content %}
+<div class='content'>
+	<section class='list_section'>
+		<div class='section_header'><a>最新作品</a></div>
+		<div class='section_content'>
+			{% for article in articles %}
+			<div class='single_content'>
+			<details>
+				<summary class='list_title'><a href='{% url "myblog:article" article.id %}'>{{ article }}</a></summary>
+				<span><b>--<a href='{% url "myblog:blogger" article.Author %}'>{{ article.Author }}</a>--</b><i>{{ article.Pub_date }}</i></span>
+			</details>
+			</div>
+			
+			{% endfor %}
+		</div>
+	</section>
+	
+	<section class='content_section'>
+		<div class='section_header'><a>文章摘要aaaa的aaaaaaaaaaaaaaaaaaaaaaaaaaaa</a></div>
+		<div class='section_content'>
+			{% for article in articles %}
+			<div class='single_content'>
+				<div class='content_title'><a href='{% url "myblog:article" article.id %}'>{{ article }}</a></div>
+				<p><textarea readonly='readonly' style='overflow:hidden'>{{ article.Content }}</textarea></p>
+			</div>
+			{% endfor %}
+		</div>
+	</section>
+</div>
+{% endblock %}

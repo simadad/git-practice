@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+	{% load static %}
+	<link rel='stylesheet' type='text/css' href="{% static 'base.css' %}" />
+	{% block link %}<link />{% endblock %}
+    <title>{% block title %}标题{% endblock %}</title>
+</head>
+<body>
+<header>
+	<h1><a href='{% url "myblog:index" %}'>Welcome To My Blog!</a></h1>
+	{% block header %}{% endblock %} 
+</header>
+<hr />
+<nav>
+	{% block nav %}导航{% endblock %}
+</nav>
+<hr />
+{% block content %}内容{% endblock %}
+<footer>
+	{% block footer %}页脚{% endblock %}
+	<span><b><a>***感谢访问***</a></b></span>
+</footer>
+</body>
+</html>

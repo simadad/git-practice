@@ -12,13 +12,24 @@ def index(request):
 
 def article(request, article_id):
     article_data = get_object_or_404(Article, pk=article_id)
+    commenter_data = {}
+    if request.POST:
+        global commenter_data
+        commenter_data = request.POST
+        Commenter.objects.create(
+            Author=commenter_data['author'],
+            Content=commenter_data['content'],
+            Article=article_data
+        )
+    else:
+        pass
     return render(request, 'myblog/article.html', {
-        'article': article_data
+        'article': article_data,
     })
 
 
-def blogger(request, blogger_id):
-    blogger_data = get_object_or_404(Blogger, pk=blogger_id)
+def blogger(request, blogger_name):
+    blogger_data = get_object_or_404(Blogger, Name=blogger_name)
     return render(request, 'myblog/blogger.html', {
         'blogger': blogger_data
     })

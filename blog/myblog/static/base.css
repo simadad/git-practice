@@ -1,0 +1,56 @@
+*{
+	margin: 0;
+	padding: 0;
+}
+
+a:link { text-decoration: none;color: blue}
+a:visited { text-decoration: none;color: green}
+a:hover { text-decoration:underline;color: red} 
+a:active { text-decoration:blink} 
+footer span a:hover { text-decoration:none; color: yellow}
+
+div{
+	border-radius: 1em 1em;
+}
+
+details summary::-webkit-details-marker { display:none;}
+summary {outline: none;}
+
+/* body */
+body{
+	width: 1280px;
+	margin: 0 auto;
+	background-image: url(myblog/image/index_01.jpg);
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+}
+
+
+/* header */
+header{
+	width: 100%;
+	background-color: #C0C0C0;
+}
+
+header h1{
+	text-align: center;
+}
+
+/* nav */
+nav{
+	background-color: #B0B0B0;
+}
+
+/* footer */
+footer{
+	width: 100%;
+	background-color: #888888;
+	text-align: center;
+}
+
+/* details */
+header b{
+	padding-left: 5px;	
+}
+

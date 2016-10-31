@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}Blogger{% endblock %}
+{% block content %}
+<section>
+	<article><i><b>昵称：</b></i><span>{{ blogger.Name }}</span></article>
+	<article><i><b>性别：</b></i><span>{{ blogger.get_Gender_display }}</span></article>
+	<article><i><b>年纪：</b></i><span>{{ blogger.get_Age_display }}</span></article>
+	<article><i><b>邮箱：</b></i><span>{{ blogger.Email }}</span></article>
+	<article><i><b>注册时间：</b></i><span>{{ blogger.Register_date }}</span></article>
+	<article><i><b>简介：</b></i><p>{{ blogger.Intro }}</p></article>
+</section>
+<hr />
+<section>
+	{% for article in blogger.article_set.all %}
+	<article><h4>{{ article }} </h4></article><hr />
+	{% endfor %}
+</section>
+{% endblock %}
