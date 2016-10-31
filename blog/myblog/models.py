@@ -35,6 +35,7 @@ class Article(models.Model):
     Title = models.CharField(max_length=30)
     Author = models.ForeignKey(Blogger, on_delete=models.CASCADE)
     Content = models.TextField(max_length=5000)
+    Like = models.IntegerField(default=0)
     Pub_date = models.DateTimeField('published date', auto_now_add=True)
 
     def __str__(self):
@@ -49,3 +50,11 @@ class Commenter(models.Model):
 
     def __str__(self):
         return self.Content
+
+
+class Tag(models.Model):
+    Tag = models.CharField(max_length=30)
+    Article = models.ManyToManyField(Article)
+
+    def __str__(self):
+        return self.Tag

@@ -13,7 +13,7 @@ def index(request):
 def article(request, article_id):
     article_data = get_object_or_404(Article, pk=article_id)
     commenter_data = {}
-    if request.POST:
+    if 'content' in request.POST:
         global commenter_data
         commenter_data = request.POST
         Commenter.objects.create(
@@ -22,7 +22,8 @@ def article(request, article_id):
             Article=article_data
         )
     else:
-        pass
+        article_data.Like += 1
+        article_data.save()
     return render(request, 'myblog/article.html', {
         'article': article_data,
     })

@@ -1,12 +1,13 @@
 .content{
 	width: 100%;
+	display: inline-block;
 }
 
 /* section */
 section{
 	border-top-left-radius: 1em 1em;
 	border-top-right-radius: 1em 1em;
-	min-height: 600px;
+	min-height: 500px;
 }
 
 /* left section */
@@ -14,7 +15,7 @@ section{
 	width: 382px;
 	float: left;
 	text-align: center;
-	background-color: rgba(200,60,30,0.4);
+	background-color: rgba(200,60,30,0.3);
 	border-bottom-right-radius: 1em 1em;
 }
 
@@ -42,8 +43,7 @@ section{
 /* right section */
 .content_section{
 	width: 894px;
-	position: relative;
-	left: 30%;
+	float: right;
 	padding: 1px 0;
 	background-color: rgba(20,40,80,0.3);
 	border-bottom-left-radius: 1em 1em;
