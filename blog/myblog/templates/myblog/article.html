@@ -1,36 +1,44 @@
 {% extends 'base.html' %}
+{% block link %}
+	{% load static %}
+	<link rel='stylesheet' type='text/css' href="{% static 'myblog/article.css' %}" />
+{% endblock %}
 {% block title %}Article{% endblock %}
 {% block content %}
-<section>
-	<article>
-		<h3>{{ article }}</h3>
-		<p>{{article.Content}} </p>
-	</article>
-</section>
-<hr />
-<section>
-	<article>
-		<h4>评论</h4>
-		{% for commenter in article.commenter_set.all %}
-			<p>{{ commenter }} </p>
-		{% endfor %}
-	</article>
+<div class='content'>
+	<section class='article'>
+		<article class='article_title'>
+			<h2>{{ article }}</h2>
+			<b>--by {{article.Author}}</b>
+		</article>
+		<i>{{ article.Pub_date }}</i>
+		<article class='article_content'>
+			<p><textarea readonly='readonly' style='overflow:hidden' rows='50'>{{ article.Content }}</textarea></p>
+		</article>
+	</section>
+	<section class='commenter'>
+		<article class='commenter_show'>
+			<h4>评论</h4>
+			{% for commenter in article.commenter_set.all %}
+				<p>{{ commenter.Author }}: {{ commenter }} -- {{ commenter.Pub_date }}</p>
+			{% endfor %}
+		</article>
+		<article class='commenter_add'>
+			<h4>添加评论</h4>
+			<form method='POST'>
+			{% csrf_token %}
+				<div>
+					<label>您的昵称：</label>
+					<input type='text' name='author' value='Visitor'></input>
+				</div>
+				<div>
+					<label>您的评论：</label>
+					<textarea name='content'></textarea>
+				</div>
+				<input type='submit' value='提交'></input>
+			</form>
+		</article>
+	</section>
 	<hr />
-	<article>
-		<h4>添加评论</h4>
-		<form method='POST'>
-		{% csrf_token %}
-			<div>
-				<label>您的昵称：</label>
-				<input type='text' name='author' value='Visitor'></input>
-			</div>
-			<div>
-				<label>您的评论：</label>
-				<textarea name='content'></textarea>
-			</div>
-			<input type='submit' value='提交'></input>
-		</form>
-	</article>
-</section>
-<hr />
+</div>
 {% endblock %}

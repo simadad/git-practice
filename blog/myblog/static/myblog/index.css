@@ -2,7 +2,6 @@
 	width: 100%;
 }
 
-
 /* section */
 section{
 	border-top-left-radius: 1em 1em;
@@ -14,15 +13,14 @@ section{
 .list_section{
 	width: 382px;
 	float: left;
+	text-align: center;
 	background-color: rgba(200,60,30,0.4);
 	border-bottom-right-radius: 1em 1em;
-	
 }
 
 .list_section .section_header{
 	margin: 5px 10px;
 	padding: 5px 0;
-	text-align: center;
 	text-shadow: 2px 2px 3px ;
 	font-weight: blod;
 	font-size: 150%;
@@ -38,22 +36,22 @@ section{
 .list_section .section_content .single_content{
 	margin: 5px 5px;
 	background-color: rgba(200,200,230,0.5);
-	text-align: center;
 	font-weight: bold;
 }
 
 /* right section */
 .content_section{
-	clear: clear;
 	width: 894px;
 	position: relative;
 	left: 30%;
 	padding: 1px 0;
 	background-color: rgba(20,40,80,0.3);
 	border-bottom-left-radius: 1em 1em;
+	text-align: center;
 }
 
 .content_section .section_header{
+	clear: both;
 	margin: 5px 100px;
 	padding: 5px 0;
 	text-shadow: 2px 2px 3px ;
@@ -73,16 +71,8 @@ section{
 	background-color: rgba(200,240,200,0.5);
 	font-size: 1.25em;
 	font-weight: bold;
-	text-align: center;
 }
 
 .content_title{
 	text-shadow: 2px 2px 3px;
-}
-
-.content_section textarea{
-	background-color: rgba(0,0,0,0);
-	border: none;
-	text-indent: 3em; 
-	
 }
