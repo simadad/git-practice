@@ -1,0 +1,10 @@
+<form method='POST' action='{% url "index:registration" %}'>
+{% csrf_token %}
+	<label>用户名：</label>
+	<input type='text' name='username'></input>
+	<label>密码：</label>
+	<input type='password' name='password'></input>
+	<label>邮箱：</label>
+	<input type='email' name='email'></input>
+	<input type='submit'></input>
+</form>

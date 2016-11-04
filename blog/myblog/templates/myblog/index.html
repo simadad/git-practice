@@ -4,7 +4,6 @@
 	<link rel='stylesheet' type='text/css' href="{% static 'myblog/index.css' %}" />
 {% endblock %}
 {% block title %}Index{% endblock %}
-
 {% block content %}
 <div class='content'>
 	<section class='list_section'>
@@ -14,11 +13,11 @@
 			<div class='single_content'>
 			<details>
 				<summary class='list_title'><a href='{% url "myblog:article" article.id %}'>{{ article }}</a></summary>
-				<span><b>--<a href='{% url "myblog:blogger" article.Author %}'>{{ article.Author }}</a>--</b><i>{{ article.Pub_date }}</i></span>
+				<span><b>--<a href='{% url "myblog:blogger" article.Author.id %}'>{{ article.Author }}</a>--</b><i>{{ article.Pub_date }}</i></span>
 				<div>
 					{% for tag in article.tag_set.all %}
 					<span>
-						[{{ tag }}]
+						[<a href='{% url "myblog:tag" tag.id %} '>{{ tag }}</a>]
 					</span>
 					{% endfor %}
 				</div>

@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}Tag{% endblock %}
+{% block content %}
+<div class='content'>
+{% for article in tag.Article.all %}
+	<div class='single_content'>
+		<div class='content_title'><a href='{% url "myblog:article" article.id %}'>{{ article }}</a></div>
+		<p><textarea readonly='readonly' style='overflow:hidden'>{{ article.Content }}</textarea></p>
+	</div>
+{% endfor %}
+</div>
+{% endblock %}

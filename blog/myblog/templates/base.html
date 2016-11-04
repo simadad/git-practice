@@ -9,12 +9,24 @@
 </head>
 <body>
 <header>
+	{% if user.is_authenticated %}
+		{% include 'index/logout.html' %}
+	{% else %}
+		<span>
+			{% include 'index/login.html' %}
+			<span>|</span>
+			<a href='{% url "index:registration" %}'><button>注册</button></a>
+		</span>
+	{% endif %}
 	<h1><a href='{% url "myblog:index" %}'>Welcome To My Blog!</a></h1>
 	{% block header %}{% endblock %} 
 </header>
 <hr />
 <nav>
-	{% block nav %}导航{% endblock %}
+	{% block nav %}
+		<span>导航</span>
+		<a href='{% url "myblog:editor" user.id -1 %} '><button>添加文章</button></a>
+	{% endblock %}
 </nav>
 <hr />
 {% block content %}内容{% endblock %}

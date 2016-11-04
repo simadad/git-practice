@@ -1,15 +1,14 @@
 from __future__ import unicode_literals
-
 from django.db import models
-
+from django.contrib.auth.models import User
 # Create your models here.
 
 
 class Blogger(models.Model):
-    Name = models.CharField(max_length=10)
     GENDER_CHOICES = (
         ('M', 'Male'),
         ('FM', 'Female'),
+        ('D', 'Default')
     )
     AGE_CHOICES = (
         ('B', 'Babe'),
@@ -18,23 +17,24 @@ class Blogger(models.Model):
         ('T', 'Teenage'),
         ('Y', 'Youth'),
         ('P', 'Postadolescent'),
-        ('O', 'Old')
+        ('O', 'Old'),
+        ('D', 'Default')
     )
-    Gender = models.CharField(max_length=2, choices=GENDER_CHOICES)
-    Age = models.CharField(max_length=2, choices=AGE_CHOICES)
-    Email = models.EmailField(max_length=50)
+    Admin = models.OneToOneField(User)
+    id = models.IntegerField(primary_key=True)
+    Gender = models.CharField(max_length=2, choices=GENDER_CHOICES, default='D')
+    Age = models.CharField(max_length=2, choices=AGE_CHOICES, default='D')
     Favicon = models.ImageField
-    Register_date = models.DateField(auto_now_add=True)
-    Intro = models.TextField(max_length=500, help_text='Introduce yourself in 500 words.')
+    Intro = models.TextField(max_length=500, help_text='Introduce yourself in 500 words.', default='Default intro')
 
     def __str__(self):
-        return self.Name
+        return self.Admin.username
 
 
 class Article(models.Model):
-    Title = models.CharField(max_length=30)
+    Title = models.CharField(max_length=30, default='A default title')
     Author = models.ForeignKey(Blogger, on_delete=models.CASCADE)
-    Content = models.TextField(max_length=5000)
+    Content = models.TextField(max_length=5000, default='A default content')
     Like = models.IntegerField(default=0)
     Pub_date = models.DateTimeField('published date', auto_now_add=True)
 

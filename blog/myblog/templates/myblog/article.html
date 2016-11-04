@@ -9,14 +9,14 @@
 	<section class='article'>
 		<article class='article_title'>
 			<h2>{{ article }}</h2>
-			<b>--by:<a href='{% url "myblog:blogger" article.Author %}'>{{ article.Author }}</a></b>
+			<b>--by:<a href='{% url "myblog:blogger" article.Author.id %}'>{{ article.Author }}</a></b>
 		</article>
 		<i>{{ article.Pub_date }}</i>
 		<article class='article_content'>
 			<aside class='evaluate'>
 				<form method='POST'>
 				{% csrf_token %}
-					<button type="submit" value='A'>A</button>
+					<button type="submit" name='like' value='A'>A</button>
 					<label name='like'>{{ article.Like }}</label>
 				</form>
 			</aside>

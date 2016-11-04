@@ -2,7 +2,7 @@
 {% block title %}Blogger{% endblock %}
 {% block content %}
 <section>
-	<article><i><b>昵称：</b></i><span>{{ blogger.Name }}</span></article>
+	<article><i><b>昵称：</b></i><span>{{ blogger.Admin.username }}</span></article>
 	<article><i><b>性别：</b></i><span>{{ blogger.get_Gender_display }}</span></article>
 	<article><i><b>年纪：</b></i><span>{{ blogger.get_Age_display }}</span></article>
 	<article><i><b>邮箱：</b></i><span>{{ blogger.Email }}</span></article>
