@@ -56,6 +56,14 @@
 	margin-left: 5%;
 }
 
+.editor{
+	float:right;
+}
+
+.tag {
+	clear:both;
+}
+
 .article_content p textarea{
 	width: 98%;
 	min-height: 50em;

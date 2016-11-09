@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% block title %}Blogger{% endblock %}
+{% block content %}
+<div class='content'>
+	<aside class='blogger_editor'><button type='submit' form='blogger_editor'>提交</button></aside>
+	<aside class='blogger_editor'><a href='{% url "myblog:blogger" user.id %} '><button>取消</button></a></aside>
+	<section class='blogger_info'>
+	<form method='POST' id='blogger_editor'>
+	{% csrf_token %}
+		<article>
+			<i><b>昵称：</b></i>
+			<input type='text' name='username' value='{{ blogger.User.username }}' placeholder='昵称'></input>
+		</article>
+		<article>
+			<i><b>性别：</b></i>
+			{% for gender in blogger.GENDER_CHOICES %}
+				{% if gender.0 == blogger.Gender %}
+			<input type='radio' name='gender' value='{{ gender.0 }}' checked='checked'>{{ gender.1 }}</input>
+				{% else %}
+			<input type='radio' name='gender' value='{{ gender.0 }}' >{{ gender.1 }}</input>
+				{% endif %}
+			{% endfor %}
+		</article>
+		<article>
+			<i><b>年纪：</b></i>
+			{% for age in blogger.AGE_CHOICES %}
+				{% if age.0 == blogger.Age %}
+			<input type='radio' name='age' value='{{ age.0 }}' checked='checked'>{{ age.1 }}</input>
+				{% else %}
+			<input type='radio' name='age' value='{{ age.0 }}' >{{ age.1 }}</input>
+				{% endif %}
+			{% endfor %}
+		</article>
+		<article>
+			<i><b>邮箱：</b></i>
+			<input type='email' name='email' value='{{ blogger.User.email }}' placeholder='邮箱'></input>
+		</article>
+		<article>
+			<i><b>注册时间：</b></i>
+			<input type='text' disabled='disabled' value='{{ blogger.Register_date }}'></input>
+		</article>
+		<article>
+			<i><b>简介：</b></i>
+			<textarea name='intro' placeholder='自我介绍'>{{ blogger.Intro }}</textarea>
+		</article>
+		<hr />
+		<article>
+			<i><b>关注：</b></i>
+			{% for followed in blogger.Followed.all %}
+			<input type='checkbox' name='followed' value='{{ followed.id }}' checked='checked'>{{ followed }}</input><span> | </span>
+			{% endfor %}
+		</article>
+		<article>
+			<i><b>粉丝：</b></i>
+			{% for follower in blogger.Followers.all %}
+			<details style='display:inline'>
+				<summary style='display:inline'><a><span>{{ follower }}</span></a></summary>
+				<span><input style='display:inline' type='checkbox' name='followed' value='{{ follower.id }}'>关注</input></span>
+			</details>
+			<span> | </span>
+			{% endfor %}
+		</article>
+	</form>
+	</section>
+	<hr />
+	<section class='blogger_article'>
+		<i><b>文章：</b></i>
+		{% for article in blogger.article_set.all %}
+		<a href='{% url "myblog:article" article.id %}'><article><h4>{{ article }} </h4></article></a><hr />
+		{% endfor %}
+	</section>
+</div>
+{% endblock %}

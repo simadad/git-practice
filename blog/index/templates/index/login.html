@@ -1,8 +1,9 @@
+<h1><a href='{% url "myblog:index" %}'>Welcome To My Blog!</a></h1>
 <form method="POST" action="{% url 'index:login' %}">
 {% csrf_token %}
 	<label>用户名：</label>
-	<input type="text" name="username"></input>
+	<input type="text" name="username" placeholder='请输入昵称' required='required' ></input>
 	<label>密码：</label>
-	<input type="password" name="password"></input>
+	<input type="password" name="password" placeholder='请输入密码' required='required' ></input>
 	<input type="submit" value="登录" />
 </form>

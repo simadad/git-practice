@@ -18,14 +18,17 @@
 			<a href='{% url "index:registration" %}'><button>注册</button></a>
 		</span>
 	{% endif %}
-	<h1><a href='{% url "myblog:index" %}'>Welcome To My Blog!</a></h1>
 	{% block header %}{% endblock %} 
 </header>
 <hr />
 <nav>
 	{% block nav %}
 		<span>导航</span>
-		<a href='{% url "myblog:editor" user.id -1 %} '><button>添加文章</button></a>
+		{% if user.is_authenticated %}
+			<a href='{% url "myblog:editor" %}?user_id={{ user.id }}&article_id={{ -1 }}'><button>添加文章</button></a>
+		{% else %}
+			<a href='{% url "index:login" %}'><button>添加文章</button></a>
+		{% endif %}
 	{% endblock %}
 </nav>
 <hr />

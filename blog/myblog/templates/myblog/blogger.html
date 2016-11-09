@@ -1,18 +1,47 @@
 {% extends 'base.html' %}
 {% block title %}Blogger{% endblock %}
 {% block content %}
-<section>
-	<article><i><b>昵称：</b></i><span>{{ blogger.Admin.username }}</span></article>
-	<article><i><b>性别：</b></i><span>{{ blogger.get_Gender_display }}</span></article>
-	<article><i><b>年纪：</b></i><span>{{ blogger.get_Age_display }}</span></article>
-	<article><i><b>邮箱：</b></i><span>{{ blogger.Email }}</span></article>
-	<article><i><b>注册时间：</b></i><span>{{ blogger.Register_date }}</span></article>
-	<article><i><b>简介：</b></i><p>{{ blogger.Intro }}</p></article>
-</section>
-<hr />
-<section>
-	{% for article in blogger.article_set.all %}
-	<article><h4>{{ article }} </h4></article><hr />
-	{% endfor %}
-</section>
+<div class='content'>
+	{% if user.id == blogger.id %}
+		<aside class='blogger_editor'><a href='{% url "myblog:blogger_editor" blogger.id %} '><button>编辑</button></a></aside>
+	{% else %}
+		<aside class='blogger_editor'><button type='submit' form='follow'>关注</button></aside>
+		<form id='follow' method='POST'>  <!--    完成POST方法         -->
+		{% csrf_token %}
+			{% for followed in user.blogger.Followed.all %}
+			<input type='hidden' name='followed' value='{{ followed.id }}'></input>
+			{% endfor %}
+			<input type='hidden' name='user_id' value='{{ user.id }}'></input>
+			<input type='hidden' name='followed' value='{{ blogger.id }}'></input>
+		</form>
+	{% endif %}
+	<section class='blogger_info'>
+		<article><i><b>昵称：</b></i><text readonly='readonly'>{{ blogger.User.username }}</text></article>
+		<article><i><b>性别：</b></i><text readonly='readonly'>{{ blogger.get_Gender_display }}</text></article>
+		<article><i><b>年纪：</b></i><text readonly='readonly'>{{ blogger.get_Age_display }}</text></article>
+		<article><i><b>邮箱：</b></i><text readonly='readonly'>{{ blogger.User.email }}</text></article>
+		<article><i><b>注册时间：</b></i><text readonly='readonly'>{{ blogger.Register_date }}</text></article>
+		<article><i><b>简介：</b></i><textarea readonly='readonly'>{{ blogger.Intro }}</textarea></article>
+		<hr />
+		<article>
+			<i><b>关注：</b></i>
+			{% for followed in blogger.Followed.all %}
+			<a href='{% url "myblog:blogger" followed.id %}'><span>{{ followed }}</span></a><span> | </span>
+			{% endfor %}
+		</article>
+		<article>
+			<i><b>粉丝：</b></i>
+			{% for follower in blogger.Followers.all %}
+			<a href='{% url "myblog:blogger" follower.id %}'><span>{{ follower }}</span></a><span> | </span>
+			{% endfor %}
+		</article>
+	</section>
+	<hr />
+	<section class='blogger_article'>
+		<i><b>文章：</b></i>
+		{% for article in blogger.article_set.all %}
+		<a href='{% url "myblog:article" article.id %}'><article><h4>{{ article }} </h4></article></a><hr />
+		{% endfor %}
+	</section>
+</div>
 {% endblock %}

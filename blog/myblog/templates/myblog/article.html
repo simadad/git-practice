@@ -20,7 +20,18 @@
 					<label name='like'>{{ article.Like }}</label>
 				</form>
 			</aside>
+			{% if user.id == article.Author.id %}
+			<aside class='editor'>
+				<a href='{% url "myblog:editor" %}?user_id={{ user.id }}&article_id={{ article.id }} '><button>编辑</button></a>
+			</aside>
+			{% endif %}
 			<p><textarea readonly='readonly' style='overflow:hidden' rows='50'>{{ article.Content }}</textarea></p>
+			<aside class='tag'>
+				<span>标签：</span>
+				{% for tag in article.tag_set.all %}
+					<a href='{% url "myblog:tag" tag.id %} '><button>{{ tag }}</button></a><span> | </span>
+				{% endfor %}
+			</aside>
 		</article>
 	</section>
 	<section class='commenter'>
@@ -36,11 +47,11 @@
 			{% csrf_token %}
 				<div>
 					<label>您的昵称：</label>
-					<input type='text' name='author' value='Visitor'></input>
+					<input type='text' name='author' placeholder='请输入您的昵称' required='required'></input>
 				</div>
 				<div>
 					<label>您的评论：</label>
-					<textarea name='content'></textarea>
+					<textarea name='content' placeholder='请输入您的评论' required='required'></textarea>
 				</div>
 				<input type='submit' value='提交'></input>
 			</form>

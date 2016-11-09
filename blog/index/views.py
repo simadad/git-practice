@@ -8,13 +8,12 @@ from myblog.models import Blogger
 
 def registration(request):
     if request.method == 'POST':
-        username = request.POST['username'],
-        password = request.POST['password'],
+        username = request.POST['username']
+        password = request.POST['password']
         email = request.POST['email']
         if username and password and email:
-            User.objects.create_superuser(username=username, password=password, email=email)
-            user = User.objects.get(username=username)
-            Blogger.objects.create(Admin=user, id=user.id)
+            user = User.objects.create_superuser(username=username, password=password, email=email)
+            Blogger.objects.create(User=user, id=user.id)
             login(request, user)
             return redirect('/blog')
         else:
@@ -30,6 +29,7 @@ def log_in(request):
         password = request.POST['password']
         user = authenticate(username=username, password=password)
         if user is not None:
+            user = User.objects.get(username=username)
             login(request, user)
             return redirect('/blog')
         else:
