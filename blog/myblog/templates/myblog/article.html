@@ -24,6 +24,14 @@
 			<aside class='editor'>
 				<a href='{% url "myblog:editor" %}?user_id={{ user.id }}&article_id={{ article.id }} '><button>编辑</button></a>
 			</aside>
+			<aside class='editor'>
+				<form method='POST'>
+				{% csrf_token %}
+					<input type='submit' value='删除'></input>
+					<input type='hidden' name='deleted_id' value='{{ article.id }}'></input>
+					<input type='hidden' name='blogger_id' value='{{ user.id }}'></input>
+				</form>
+			</aside>
 			{% endif %}
 			<p><textarea readonly='readonly' style='overflow:hidden' rows='50'>{{ article.Content }}</textarea></p>
 			<aside class='tag'>

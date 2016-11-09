@@ -8,12 +8,12 @@
 			<label>标题</label>
 			<input type='text' name='title' required='required' placeholder='请输入标题' value='{{ edited_article.Title }}'></input>
 			<label>内容</label>
-			<textarea name='content' required='required' placeholder='请输入文章内容' style='background-color:white'>{{ edited_article.Content }} </textarea>
+			<textarea name='content' required='required' placeholder='请输入文章内容' style='background-color:white'>{{ edited_article.Content }}</textarea>
 			<label>标签：</label>
 			{% for tag in edited_article.tag_set.all %}
-			<button disabled='disabled'>{{ tag }}</button><span> | </span>
+			<input type='checkbox' name='changed_tag_data' value='{{ tag }}' checked='checked'>{{ tag }}</button><span> | </span>
 			{% endfor %}
-			<input type='text' name='tag' placeholder='多个新标签空格分割'></input>
+			<input type='text' name='new_tag_data' placeholder='多个新标签空格分割'></input>
 		</form>
 		<button form='editor' type='submit'>发表</button>
 		{% if edited_article %}

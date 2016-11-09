@@ -4,12 +4,12 @@ from models import Article, Blogger, Commenter, Tag
 
 
 class ArticleAdmin(admin.ModelAdmin):
-    list_display = ('id', 'Title', 'Author', 'Like', 'Pub_date', 'Revise_date')
-    search_fields = ('id', 'Title', 'Author', 'Like', 'Pub_date', 'Content', 'Revise_date')
-    list_filter = ('Author', 'Pub_date', 'Revise_date')
+    list_display = ('id', 'Title', 'Author', 'Like', 'Pub_date', 'Revise_date', 'Status')
+    search_fields = ('id', 'Title', 'Author', 'Like', 'Pub_date', 'Content', 'Revise_date', 'Status')
+    list_filter = ('Author', 'Pub_date', 'Revise_date', 'Status')
     fieldsets = (
         ['Main', {
-            'fields': ('Title', 'Author')
+            'fields': ('Title', 'Author', 'Status')
         }],
         ['Advance', {
             'classes': ('collapse',),

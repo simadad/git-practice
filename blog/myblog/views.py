@@ -7,7 +7,7 @@ from models import Article, Blogger, Commenter, Tag
 
 
 def index(request):
-    article_data = Article.objects.order_by('-Pub_date')[:5]
+    article_data = Article.objects.all().filter(Status=True).order_by('-Pub_date')[:5]
     print article_data[0].Author.id
     return render(request, 'myblog/index.html', {
         'articles': article_data
@@ -29,8 +29,14 @@ def article(request, article_id):
         elif 'like' in request.POST:
             article_data.Like += 1
             article_data.save()
-        else:
-            pass
+        elif 'deleted_id' in request.POST:
+            deleted_id = request.POST['deleted_id']
+            blogger_id = request.POST['blogger_id']
+            article_deleted = get_object_or_404(Article, id=deleted_id)
+            article_deleted_blogger = get_object_or_404(Blogger, id=blogger_id)
+            article_deleted.Status = False
+            article_deleted.save()
+            return redirect('/blog/blogger/%d' % article_deleted_blogger.id)
     else:
         pass
     return render(request, 'myblog/article.html', {
@@ -41,11 +47,17 @@ def article(request, article_id):
 @login_required
 def blogger(request, blogger_id):
     if request.method == 'POST':
-        followed = request.POST.getlist('followed')
-        user_id = request.POST['user_id']
-        blogger_data = get_object_or_404(Blogger, id=user_id)
-        blogger_data.Followed = followed
-        blogger_data.save()
+        if 'deleted_id' in request.POST:
+            deleted_id = request.POST['deleted_id']
+            article_deleted = get_object_or_404(Article, id=deleted_id)
+            article_deleted.Status = False
+            article_deleted.save()
+        else:
+            followed = request.POST.getlist('followed')
+            user_id = request.POST['user_id']
+            blogger_data = get_object_or_404(Blogger, id=user_id)
+            blogger_data.Followed = followed
+            blogger_data.save()
     else:
         pass
     blogger_data = get_object_or_404(Blogger, id=blogger_id)
@@ -63,8 +75,6 @@ def tag(request, tag_id):
 
 @login_required
 def editor(request):
-    # tags = Tag.objects.filter()
-    # print tags
     blogger_id = request.GET.get('user_id')
     article_id = request.GET.get('article_id')
     blogger_data = get_object_or_404(Blogger, id=blogger_id)
@@ -72,10 +82,9 @@ def editor(request):
         article_data = request.POST
         title = article_data['title']
         content = article_data['content']
-        tag_data = article_data['tag']
         if title and content:
+            # article ####################################
             if int(article_id) < 0:
-                # new article #################################
                 edited_article = Article.objects.create(
                     Author=blogger_data,
                     Title=title,
@@ -86,15 +95,31 @@ def editor(request):
                 edited_article.Title = title
                 edited_article.Content = content
                 edited_article.save()
-            tags = tag_data.split()
-            for i in tags:
-                if Tag.objects.filter(Tag=i):
-                    new_tag = Tag.objects.filter(Tag=i)
-                else:
-                    new_tag = Tag.objects.create(
-                        Tag=i
-                    )
-                new_tag.Article.add(edited_article)
+            # tags #####################################
+            new_tag_data = article_data['new_tag_data']
+            changed_tag_data = request.POST.getlist('changed_tag_data')
+            old_tag_data = edited_article.tag_set.all()
+            # add new tags ################################
+            if new_tag_data:
+                for i in new_tag_data:
+                    if Tag.objects.filter(Tag=i):
+                        new_tag = Tag.objects.filter(Tag=i)[0]
+                    else:
+                        new_tag = Tag.objects.create(
+                            Tag=i
+                        )
+                    new_tag.Article.add(edited_article)             # 需测试是否重复添加
+            else:
+                pass
+            # delete tags ########################################
+            if old_tag_data:
+                for j in old_tag_data:
+                    if j.Tag in changed_tag_data:
+                        pass
+                    else:
+                        edited_article.tag_set.remove(j)
+            else:
+                pass
             return redirect('/blog/article/%d' % edited_article.id)
         else:
             pass
@@ -106,7 +131,7 @@ def editor(request):
                 'edited_article': None
             })
         else:
-            # edited article AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+            # edited article ##########################
             edited_article = get_object_or_404(Article, id=article_id)
             return render(request, 'myblog/editor.html', {
                 'edited_article': edited_article

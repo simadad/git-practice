@@ -39,6 +39,7 @@ class Article(models.Model):
     Like = models.IntegerField('赞', default=0)
     Pub_date = models.DateTimeField('发表时间', auto_now_add=True)
     Revise_date = models.DateTimeField('最后修订', auto_now=True)
+    Status = models.BooleanField('上线', default=True)
 
     def __str__(self):
         return self.Title
