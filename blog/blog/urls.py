@@ -19,5 +19,6 @@ from django.contrib import admin
 urlpatterns = [
     url(r'^blog/', include('myblog.urls', namespace='myblog')),
     url(r'^accounts/', include('index.urls', namespace='index')),
+    url(r'^recycle/', include('recycle.urls', namespace='recycle')),
     url(r'^admin/', admin.site.urls),
 ]

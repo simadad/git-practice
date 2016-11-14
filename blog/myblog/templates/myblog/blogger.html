@@ -4,6 +4,11 @@
 <div class='content'>
 	{% if user.id == blogger.id %}
 		<aside class='blogger_editor'><a href='{% url "myblog:blogger_editor" blogger.id %} '><button>编辑</button></a></aside>
+		<aside class='blogger_editor'><button type='submit' form='blogger_delete'>删除账户</button></a></aside>
+		<form id='blogger_delete' method='POST'>
+		{% csrf_token %}
+			<input type='hidden' name='blogger_delete_id' value='{{ blogger.id }}'></input>
+		</form>
 	{% else %}
 		<aside class='blogger_editor'><button type='submit' form='follow'>关注</button></aside>
 		<form id='follow' method='POST'>
@@ -16,7 +21,7 @@
 		</form>
 	{% endif %}
 	<section class='blogger_info'>
-		<article><i><b>昵称：</b></i><text readonly='readonly'>{{ blogger.User.username }}</text></article>
+		<article><i><b>昵称：</b></i><text readonly='readonly'>{{ blogger.Nickname }}</text></article>
 		<article><i><b>性别：</b></i><text readonly='readonly'>{{ blogger.get_Gender_display }}</text></article>
 		<article><i><b>年纪：</b></i><text readonly='readonly'>{{ blogger.get_Age_display }}</text></article>
 		<article><i><b>邮箱：</b></i><text readonly='readonly'>{{ blogger.User.email }}</text></article>
@@ -44,13 +49,18 @@
 			<article style='margin-bottom:5px;background-color:rgba(200,200,200,0.5)'>
 			<form method='POST'>
 			{% csrf_token %}
+				{% if user.id == blogger.id %}
 				<input type='submit' value='删除'></input>
-				<input type='hidden' name='deleted_id' value='{{ article.id }}'></input>
+				{% endif %}
+				<input type='hidden' name='article_deleted_id' value='{{ article.id }}'></input>
 				<a href='{% url "myblog:article" article.id %}'><span>{{ article }}</span></a>
 			</form>
 			</article>
 			{% endif %}
 			{% endfor %}
+			{% if user.id == blogger.id %}
+			<a href='{% url "recycle:article_re" user.id %}'><button>回收站</button></a>
+			{% endif %}
 	</section>
 </div>
 {% endblock %}

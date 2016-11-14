@@ -2,7 +2,7 @@
 <form method='POST' action='{% url "index:registration" %}'>
 {% csrf_token %}
 	<label>用户名：</label>
-	<input type="text" name="username" placeholder='请输入昵称' required='required' ></input>
+	<input type="text" name="username" placeholder='请输入用户名' required='required' ></input>
 	<label>密码：</label>
 	<input type='password' name='password' placeholder='请输入密码' required='required'></input>
 	<label>邮箱：</label>

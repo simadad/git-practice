@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'myblog.apps.MyblogConfig',
-    'index'
+    'index',
+    'recycle',
 ]
 
 MIDDLEWARE = [
