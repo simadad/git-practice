@@ -5,8 +5,13 @@
 	<aside class='blogger_editor'><button type='submit' form='blogger_editor'>提交</button></aside>
 	<aside class='blogger_editor'><a href='{% url "myblog:blogger" user.id %} '><button>取消</button></a></aside>
 	<section class='blogger_info'>
-	<form method='POST' id='blogger_editor'>
+	<form method='POST' id='blogger_editor' enctype='multipart/form-data'>
 	{% csrf_token %}
+	{{ uf.as_p }}
+		<article>
+			<i><b>头像：</b></i>
+			<input type='file' name='favicon' placeholder='头像'><img src='{{ blogger.Favicon.url }}' /></input>
+		</article>
 		<article>
 			<i><b>昵称：</b></i>
 			<input type='text' name='nickname' value='{{ blogger.Nickname }}' placeholder='昵称'></input>

@@ -32,7 +32,7 @@ class Blogger(models.Model):
     Followed = models.ManyToManyField('Blogger', 'Followers')
     Gender = models.CharField('性别', max_length=2, choices=GENDER_CHOICES, default='M')
     Age = models.CharField('年纪', max_length=2, choices=AGE_CHOICES, default='B')
-    Favicon = models.ImageField
+    Favicon = models.ImageField(upload_to='img/favicon', null=True, default='static/myblog/image/default.jpg')
     Register_date = models.DateField('注册时间', auto_now_add=True)
     Intro = models.TextField('自我介绍', max_length=500, help_text='Introduce yourself.', default='Default intro')
 

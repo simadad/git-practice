@@ -2,6 +2,10 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from models import Article, Blogger, Commenter, Tag
+from django import forms
+from PIL import Image
+from blog.settings import MEDIA_ROOT
+
 
 # Create your views here.
 
@@ -136,6 +140,8 @@ def editor(request):
                     new_tag.Article.add(edited_article)
             else:
                 pass
+            tag_all = Tag.objects.get(Tag='ALL')
+            tag_all.Article.add(edited_article)
             return redirect('/blog/article/%d' % edited_article.id)
         else:
             pass
@@ -154,6 +160,10 @@ def editor(request):
             })
 
 
+class ImgForm(forms.Form):
+    favicon = forms.ImageField()
+
+
 @login_required
 def blogger_editor(request, blogger_id):
     blogger_data = get_object_or_404(Blogger, id=blogger_id)
@@ -163,15 +173,21 @@ def blogger_editor(request, blogger_id):
         email = blogger_editor_data['email']
         gender = blogger_editor_data['gender']
         age = blogger_editor_data['age']
-        # favicon = blogger_editor_data['favicon']
-        followed = request.POST.getlist('followed')        # 得到name同为followed的input元素的value的数组
         intro = blogger_editor_data['intro']
+        followed = request.POST.getlist('followed')        # 得到name同为followed的input元素的value的数组
+
+        favicon = ImgForm(request.POST, request.FILES)
+        if favicon.is_valid():
+            favicon = favicon.cleaned_data['favicon']
+            img = Image.open(favicon)
+            img.save('media/img/favicon/%s.jpg' % blogger_id)
+
         if nickname and email and gender and age and intro:
             blogger_data.Nickname = nickname
             blogger_data.User.email = email
             blogger_data.Gender = gender
             blogger_data.Age = age
-            # blogger_data.Favicon = favicon
+            blogger_data.Favicon = favicon
             blogger_data.Followed = followed
             blogger_data.Intro = intro
             blogger_data.save()

@@ -15,10 +15,12 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     url(r'^blog/', include('myblog.urls', namespace='myblog')),
     url(r'^accounts/', include('index.urls', namespace='index')),
     url(r'^recycle/', include('recycle.urls', namespace='recycle')),
-    url(r'^admin/', admin.site.urls),
-]
+    url(r'^admin/', admin.site.urls)
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

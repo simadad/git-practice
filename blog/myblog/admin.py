@@ -24,7 +24,7 @@ class BloggerAdmin(admin.ModelAdmin):
     search_fields = ('id', 'User', 'Nickname', 'Gender', 'Age', 'Intro', 'Followed', 'Followers', 'Register_date')
     fieldsets = (
         ['Main', {
-            'fields': ('id', 'Nickname', 'Gender', 'Age', 'Status'),
+            'fields': ('id', 'Nickname', 'Gender', 'Age', 'Status', 'Favicon'),
         }],
         ['Advance', {
             'classes': ('collapse',),

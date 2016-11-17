@@ -46,7 +46,7 @@
 		<article class='commenter_show'>
 			<h4>评论</h4>
 			{% for commenter in article.commenter_set.all %}
-				<p>{{ commenter.Author }}: {{ commenter }} -- {{ commenter.Pub_date }}</p>
+				<p>{{ commenter.Author }}: {{ commenter }} -- {{ commenter.Pub_date }}</p><hr />
 			{% endfor %}
 		</article>
 		<article class='commenter_add'>
