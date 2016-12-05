@@ -9,4 +9,5 @@ urlpatterns = [
     url(r'^tag/([0-9]+)', views.tag, name='tag'),
     url(r'^editor/', views.editor, name='editor'),
     url(r'^blogger/editor/([0-9]+)', views.blogger_editor, name='blogger_editor'),
+    url(r'^reprint/', views.reprint, name='reprint'),
 ]

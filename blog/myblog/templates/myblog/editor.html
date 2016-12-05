@@ -11,7 +11,7 @@
 			<textarea name='content' required='required' placeholder='请输入文章内容' style='background-color:white'>{{ edited_article.Content }}</textarea>
 			<label>标签：</label>
 			{% for tag in edited_article.tag_set.all %}
-			<input type='checkbox' name='changed_tag_data' value='{{ tag }}' checked='checked'>{{ tag }}</button><span> | </span>
+			<input type='checkbox' name='changed_tag_data' value='{{ tag }}' checked='checked'>{{ tag }}</button>{% if not forloop.last %}<span> | </span>{% endif %}
 			{% endfor %}
 			<input type='text' name='new_tag_data' placeholder='多个新标签空格分割'></input>
 		</form>

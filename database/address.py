@@ -6,7 +6,7 @@ Database = sqlite3.connect('address_book.db')
 try:
     Database.execute('''
     create table contact(
-    id  int primary key,
+    id  integer primary key,
     name    text        not null,
     phone   int         not null,
     email  text        not null);
@@ -20,6 +20,7 @@ def insert(data, database=Database, table='contact'):
     database.execute('''
     insert into %s values(null, %s);
     ''' % (table, data))
+    print 'insert into %s values(null, %s);' % (table, data)
     database.commit()
 
 

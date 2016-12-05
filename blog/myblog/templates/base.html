@@ -29,6 +29,11 @@
 		{% else %}
 			<a href='{% url "index:login" %}'><button>添加文章</button></a>
 		{% endif %}
+		<form action='{% url "search:search_engine" %}' method='POST' >
+		{% csrf_token %}
+			<input type='text' name=search placeholder='请输入搜索关键字' required='required' />
+			<input type='submit' />
+		</form>
 	{% endblock %}
 </nav>
 <hr />

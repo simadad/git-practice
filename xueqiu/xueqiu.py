@@ -23,7 +23,7 @@ def get_html():
                       'Chrome/50.0.2661.102 Safari/537.36',
         'X-Requested-With': 'XMLHttpRequest'
     }
-    res = urllib2.Request('https://xueqiu.com/P/ZH010389', headers=headers)
+    res = urllib2.Request('https://xueqiu.com/P/ZH010389', headers=headers, method=POST)
     resp = urllib2.urlopen(res)
     if resp:
         print ('请求成功')

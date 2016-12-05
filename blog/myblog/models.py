@@ -32,7 +32,7 @@ class Blogger(models.Model):
     Followed = models.ManyToManyField('Blogger', 'Followers')
     Gender = models.CharField('性别', max_length=2, choices=GENDER_CHOICES, default='M')
     Age = models.CharField('年纪', max_length=2, choices=AGE_CHOICES, default='B')
-    Favicon = models.ImageField(upload_to='img/favicon', null=True, default='static/myblog/image/default.jpg')
+    Favicon = models.ImageField(upload_to='img/favicon', null=True, default='../static/myblog/image/default.jpg')
     Register_date = models.DateField('注册时间', auto_now_add=True)
     Intro = models.TextField('自我介绍', max_length=500, help_text='Introduce yourself.', default='Default intro')
 
@@ -45,7 +45,9 @@ class Blogger(models.Model):
 
 class Article(models.Model):
     Title = models.CharField('标题', max_length=30, default='A default title')
-    Author = models.ForeignKey(Blogger, on_delete=models.CASCADE)
+    Author = models.ForeignKey(Blogger, on_delete=models.CASCADE, related_name='article_set')
+    # Originator = models.ForeignKey(Blogger, on_delete=models.CASCADE, related_name='Article')
+    Original_id = models.IntegerField()
     Content = models.TextField('内容', max_length=5000, default='A default content')
     Like = models.IntegerField('赞', default=0)
     Pub_date = models.DateTimeField('发表时间', auto_now_add=True)
@@ -79,3 +81,7 @@ class Tag(models.Model):
 
     def __str__(self):
         return self.Tag
+
+    @property
+    def article_quantity(self):
+        return len(self.Article.all())

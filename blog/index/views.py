@@ -12,9 +12,6 @@ def registration(request):
         username = request.POST['username']
         password = request.POST['password']
         email = request.POST['email']
-        print 111111111
-        print password
-        print 1111111111
         if username and password and email:
             user = User.objects.create_superuser(
                 username=username,

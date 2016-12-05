@@ -8,6 +8,11 @@
 <div class='content'>
 	<section class='article'>
 		<article class='article_title'>
+			{% if article.id == original.id %}
+			<span>【原创】</span>
+			{% else %}
+			<span>【转载】</span>
+			{% endif %}
 			<h2>{{ article }}</h2>
 			<b>--by:<a href='{% url "myblog:blogger" article.Author.id %}'>{{ article.Author }}</a></b>
 		</article>
@@ -16,13 +21,13 @@
 			<aside class='evaluate'>
 				<form method='POST'>
 				{% csrf_token %}
-					<button type="submit" name='like' value='A'>A</button>
+					<button type="submit" name='like' value='A'>赞</button>
 					<label name='like'>{{ article.Like }}</label>
 				</form>
 			</aside>
 			{% if user.id == article.Author.id %}
 			<aside class='editor'>
-				<a href='{% url "myblog:editor" %}?user_id={{ user.id }}&article_id={{ article.id }} '><button>编辑</button></a>
+				<a href='{% url "myblog:editor" %}?user_id={{ user.id }}&article_id={{ article.id }}'><button>编辑</button></a>
 			</aside>
 			<aside class='editor'>
 				<form method='POST'>
@@ -32,12 +37,24 @@
 					<input type='hidden' name='blogger_id' value='{{ user.id }}'></input>
 				</form>
 			</aside>
+			{% else %}
+			<aside>
+				<a href='{% url "myblog:reprint" %}?user_id={{ user.id }}&article_id={{ article.id }}'><button>转载</button></a>
+			</aside>
 			{% endif %}
-			<p><textarea readonly='readonly' style='overflow:hidden' rows='50'>{{ article.Content }}</textarea></p>
+			<p>
+				<p>
+					<span>*原创保护* 此文为</span>
+					<span><a href='{% url "myblog:blogger" original.Author.id %}'> {{ original.Author }} </a></span>
+					<span>原创. </span>
+					<span><a href='{% url "myblog:article" original.id %}' target='_blank'>*点击查看原文*</a></span>
+				</p>
+				<textarea readonly='readonly' style='overflow:hidden' rows='50'>{{ article.Content }}</textarea>
+			</p>
 			<aside class='tag'>
 				<span>标签：</span>
 				{% for tag in article.tag_set.all %}
-					<a href='{% url "myblog:tag" tag.id %} '><button>{{ tag }}</button></a><span> | </span>
+					<a href='{% url "myblog:tag" tag.id %}?page=1 '><button>{{ tag }}</button></a></button>{% if not forloop.last %}<span> | </span>{% endif %}
 				{% endfor %}
 			</aside>
 		</article>

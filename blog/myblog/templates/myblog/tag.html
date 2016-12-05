@@ -2,11 +2,50 @@
 {% block title %}Tag{% endblock %}
 {% block content %}
 <div class='content'>
-{% for article in tag.Article.all %}
-	<div class='single_content'>
-		<div class='content_title'><a href='{% url "myblog:article" article.id %}'>{{ article }}</a></div>
-		<p><textarea readonly='readonly' style='overflow:hidden'>{{ article.Content }}</textarea></p>
+<section class='list_section'>
+	<div class='section_header'><a><h3>Tag: {{ tag }}</h3></a></div>
+	<article class='section_content'>
+		{% for article in articles %}
+		<details class='single_content'>
+			<summary class='list_title'><a href='#article{{ article.id }}'>{{ article }}</a></summary>
+			<span><b>--<a href='{% url "myblog:blogger" article.Author.id %}'>{{ article.Author }}</a>--<b>{{ article.Like }}赞</b>--</b><i>{{ article.Pub_date }}</i></span>
+			<div>
+				{% for i in article.tag_set.all %}
+					{% if i == tag %}
+				<span class='aim_tag' style='color:red;'>
+					<a href='{% url "myblog:tag" i.id %}?page=1 '><i><b>{{ i }}</b></i></a>
+				</span>
+					{% else %}
+				<span>
+					<a href='{% url "myblog:tag" i.id %}?page=1 '>{{ i }}</a>
+				</span>
+					{% endif %}
+				{% endfor %}
+			</div>
+		</details>
+		{% endfor %}
+	</article>
+	<div class='page_bar'>
+		<span><a href='{% url "myblog:tag" tag.id %}?page=1'>首  页</a></span>
+		{% if page > 1 %}
+		<span><a href='{% url "myblog:tag" tag.id %}?page={{ page|add:-1 }}'>上一页</a></span>
+		{% endif %}
+		{% if page < pages %}
+		<span><a href='{% url "myblog:tag" tag.id %}?page={{ page|add:1 }}'>下一页</a></span>
+		{% endif %}
+		<span><a href='{% url "myblog:tag" tag.id %}?page={{ pages }}'>尾  页</a></span>
 	</div>
-{% endfor %}
+</section>
+<section class='content_section'>
+	<div class='section_header'><a>文章摘要</a></div>
+	<article class='section_content'>
+		{% for article in articles %}
+		<div class='single_content' id='article{{ article.id }}'>
+			<div class='content_title'><a href='{% url "myblog:article" article.id %}'>{{ article }}</a></div>
+			<p><textarea readonly='readonly' style='overflow:hidden' cols='100' rows='20'>{{ article.Content }}</textarea></p>
+		</div>
+		{% endfor %}
+	</article>
+</section>
 </div>
 {% endblock %}

@@ -4,7 +4,8 @@ from django.contrib.auth.decorators import login_required
 from models import Article, Blogger, Commenter, Tag
 from django import forms
 from PIL import Image
-from blog.settings import MEDIA_ROOT
+from random import randrange
+from math import ceil
 
 
 # Create your views here.
@@ -20,11 +21,23 @@ def blogger_delete(delete_id):
 
 
 def index(request):
-    # article_data = Article.objects.all().filter(Status=True).order_by('-Pub_date')[:5]
-    article_data = Article.objects.all().order_by('-Pub_date')[:5]
-    print article_data[0].Author.id
+    article_new = Article.objects.all().order_by('-Pub_date')[:5]
+    article_like = Article.objects.all().order_by('-Like')[:5]
+    '''
+    class TagCloud(Tag):
+        def __init__(self):
+            Tag.__init__(self)
+            self.num = len(self.Article)
+    '''
+    tag_all = Tag.objects.all().order_by('id')
+    tag_num = 10
+    orders = [randrange(0, len(tag_all)) for i in range(tag_num)]
+    tags = map(lambda x: tag_all[x], orders)
+
     return render(request, 'myblog/index.html', {
-        'articles': article_data
+        'article_new': article_new,
+        'article_like': article_like,
+        'tags': tags
     })
 
 
@@ -52,9 +65,13 @@ def article(request, article_id):
             article_deleted.save()
             return redirect('/blog/blogger/%d' % article_deleted_blogger.id)
     else:
+        # GET ##############
         pass
+    original_id = article_data.Original_id
+    original_article = get_object_or_404(Article, id=original_id)
     return render(request, 'myblog/article.html', {
-        'article': article_data
+        'article': article_data,
+        'original': original_article
     })
 
 
@@ -72,7 +89,7 @@ def blogger(request, blogger_id):
             blogger_delete(blogger_id)
             return redirect('/accounts/logout')
         elif 'followed' in request.POST:
-            followed = request.POST.getlist('followed')               # 可改进！！！###########################
+            followed = request.POST.getlist('followed')             # TODO  可改进！！！###########################
             user_id = request.POST['user_id']
             user_data = get_object_or_404(Blogger, id=user_id)
             user_data.Followed = followed
@@ -91,8 +108,18 @@ def blogger(request, blogger_id):
 
 def tag(request, tag_id):
     tag_data = get_object_or_404(Tag, id=tag_id)
+    page = int(request.GET.get('page'))
+    per_quantity = 6
+    page_start = (page - 1) * per_quantity + 1
+    page_end = page_start + per_quantity
+    total = len(tag_data.Article.all())
+    pages = int(ceil(total // per_quantity))
+    articles = tag_data.Article.all().order_by('Author')[page_start:page_end]
     return render(request, 'myblog/tag.html', {
-        'tag': tag_data
+        'page': page,
+        'pages': pages,
+        'articles': articles,
+        'tag': tag_data,
     })
 
 
@@ -110,9 +137,12 @@ def editor(request):
             if int(article_id) < 0:
                 edited_article = Article.objects.create(
                     Author=blogger_data,
+                    Original_id=-1,
                     Title=title,
                     Content=content
                 )
+                edited_article.Original_id = edited_article.id
+                edited_article.save()
             else:
                 edited_article = get_object_or_404(Article, id=article_id)
                 edited_article.Title = title
@@ -123,7 +153,7 @@ def editor(request):
             changed_tag_data = request.POST.getlist('changed_tag_data')
             old_tag_data = edited_article.tag_set.all()
             if old_tag_data:
-                # delete tags ######################################## 待优化！！！！ #####
+                # delete tags ##################################### TODO 待优化！！！！ #####
                 for j in old_tag_data:
                     if j.Tag in changed_tag_data:
                         pass
@@ -175,12 +205,13 @@ def blogger_editor(request, blogger_id):
         age = blogger_editor_data['age']
         intro = blogger_editor_data['intro']
         followed = request.POST.getlist('followed')        # 得到name同为followed的input元素的value的数组
-
         favicon = ImgForm(request.POST, request.FILES)
         if favicon.is_valid():
             favicon = favicon.cleaned_data['favicon']
             img = Image.open(favicon)
             img.save('media/img/favicon/%s.jpg' % blogger_id)
+        else:
+            favicon = blogger_data.Favicon
 
         if nickname and email and gender and age and intro:
             blogger_data.Nickname = nickname
@@ -199,3 +230,26 @@ def blogger_editor(request, blogger_id):
             'blogger': blogger_data
         })
     return redirect('/blog/blogger/%d' % int(blogger_id))
+
+
+@login_required
+def reprint(request):                                        # TODO 重复转载问题 ##################
+    blogger_id = request.GET.get('user_id')
+    article_id = request.GET.get('article_id')
+    reprint_blogger = get_object_or_404(Blogger, id=blogger_id)
+    original_article = get_object_or_404(Article, id=article_id)
+    title = original_article.Title
+    content = original_article.Content
+    reprint_article = Article.all_objects.create(
+        Title=title,
+        Content=content,
+        Author=reprint_blogger,
+        Original_id=article_id
+    )
+
+    tag_all = Tag.objects.get(Tag='ALL')
+    tag_reprint = Tag.objects.get(Tag='REPRINT')
+    tag_all.Article.add(reprint_article)
+    tag_reprint.Article.add(reprint_article)
+    return redirect('/blog/article/%d' % reprint_article.id)
+
