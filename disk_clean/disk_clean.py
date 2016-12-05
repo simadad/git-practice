@@ -2,7 +2,7 @@
 import os
 import re
 
-del_dir = r'''
+del_data = r'''
 %SystemDrive%
 *.tmp
 *._mp
@@ -21,8 +21,8 @@ del_dir = r'''
 %userprofile%\Temporary Internet Files\*.*
 %userprofile%\Temp\*.*
 '''
-del_dirs = re.findall(r'(?<=\\).+(?=\\)', del_dir)
-del_files = re.findall(r'(?<=\.)\w+', del_dir)
+del_dirs = re.findall(r'(?<=\\).+(?=\\)', del_data)
+del_files = re.findall(r'(?<=\.)\w+', del_data)
 # 正则环视匹配垃圾文件夹名及垃圾文件扩展名
 
 
