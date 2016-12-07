@@ -1,0 +1,117 @@
+.TabbedPanels {
+	margin: 0px; padding: 0px; width: 1000px; clear: none; float: left;
+}
+.TabbedPanelsTabGroup {
+	margin: 0px; padding: 0px;
+}
+.TabbedPanelsTab {
+	list-style: none; width: 200px; height: 30px; text-align: center; color: rgb(255, 255, 255); padding-top: 13px; font-family: "????"; font-size: 14px; font-weight: bold; float: left; position: relative; cursor: pointer; -moz-user-select: none; -khtml-user-select: none;
+}
+.TabbedPanelsTabHover {
+	
+}
+.TabbedPanelsTabSelected {
+	
+}
+.TabbedPanelsTab a {
+	color: black; text-decoration: none;
+}
+.TabbedPanelsContentGroup {
+	clear: both;
+}
+.TabbedPanelsContent {
+	background-position: right; width: 1000px; height: 234px; background-image: url("../images/i_r15_c18.jpg"); background-repeat: no-repeat;
+}
+.TabbedPanelsContentVisible {
+	
+}
+.VTabbedPanels .TabbedPanelsTabGroup {
+	border-width: 1px; border-style: solid; border-color: rgb(153, 153, 153) rgb(153, 153, 153) rgb(204, 204, 204) rgb(204, 204, 204); width: 10em; height: 20em; float: left; position: relative; background-color: rgb(238, 238, 238);
+}
+.VTabbedPanels .TabbedPanelsTab {
+	margin: 0px; border-top-color: currentColor; border-right-color: currentColor; border-left-color: currentColor; border-top-width: medium; border-right-width: medium; border-left-width: medium; border-top-style: none; border-right-style: none; border-left-style: none; float: none;
+}
+.VTabbedPanels .TabbedPanelsTabSelected {
+	border-bottom-color: rgb(153, 153, 153); border-bottom-width: 1px; border-bottom-style: solid; background-color: rgb(238, 238, 238);
+}
+.VTabbedPanels .TabbedPanelsContentGroup {
+	padding: 0px; width: 30em; height: 20em; clear: none; float: left;
+}
+* html .TabbedPanels {
+	margin: 0px; padding: 0px; width: 1000px; clear: none; float: left;
+}
+* html .TabbedPanelsTabGroup {
+	margin: 0px; padding: 0px;
+}
+* html .TabbedPanelsTab {
+	list-style: none; width: 200px; height: 30px; text-align: center; color: rgb(255, 255, 255); padding-top: 13px; font-family: "????"; font-size: 14px; font-weight: bold; float: left; position: relative; cursor: pointer; -moz-user-select: none; -khtml-user-select: none;
+}
+* html .TabbedPanelsTabHover {
+	
+}
+* html .TabbedPanelsTabSelected {
+	
+}
+* html .TabbedPanelsTab a {
+	color: black; text-decoration: none;
+}
+* html .TabbedPanelsContentGroup {
+	clear: both;
+}
+* html .TabbedPanelsContent {
+	background-position: right; width: 1000px; height: 234px; background-image: url("../images/i_r15_c18.jpg"); background-repeat: no-repeat;
+}
+* html .TabbedPanelsContentVisible {
+	
+}
+* html .VTabbedPanels .TabbedPanelsTabGroup {
+	border-width: 1px; border-style: solid; border-color: rgb(153, 153, 153) rgb(153, 153, 153) rgb(204, 204, 204) rgb(204, 204, 204); width: 10em; height: 20em; float: left; position: relative; background-color: rgb(238, 238, 238);
+}
+* html .VTabbedPanels .TabbedPanelsTab {
+	margin: 0px; border-top-color: currentColor; border-right-color: currentColor; border-left-color: currentColor; border-top-width: medium; border-right-width: medium; border-left-width: medium; border-top-style: none; border-right-style: none; border-left-style: none; float: none;
+}
+* html .VTabbedPanels .TabbedPanelsTabSelected {
+	border-bottom-color: rgb(153, 153, 153); border-bottom-width: 1px; border-bottom-style: solid; background-color: rgb(238, 238, 238);
+}
+* html .VTabbedPanels .TabbedPanelsContentGroup {
+	padding: 0px; width: 30em; height: 20em; clear: none; float: left;
+}
+* + html .TabbedPanels {
+	margin: 0px; padding: 0px; width: 1000px; clear: none; float: left;
+}
+* + html .TabbedPanelsTabGroup {
+	margin: 0px; padding: 0px;
+}
+* + html .TabbedPanelsTab {
+	list-style: none; width: 200px; height: 30px; text-align: center; color: rgb(255, 255, 255); padding-top: 13px; font-family: "????"; font-size: 14px; font-weight: bold; float: left; position: relative; cursor: pointer; -moz-user-select: none; -khtml-user-select: none;
+}
+* + html .TabbedPanelsTabHover {
+	
+}
+* + html .TabbedPanelsTabSelected {
+	
+}
+* + html .TabbedPanelsTab a {
+	color: black; text-decoration: none;
+}
+* + html .TabbedPanelsContentGroup {
+	clear: both;
+}
+* + html .TabbedPanelsContent {
+	background-position: right; width: 1000px; height: 234px; background-image: url("../images/i_r15_c18.jpg"); background-repeat: no-repeat;
+}
+* + html .TabbedPanelsContentVisible {
+	
+}
+* + html .VTabbedPanels .TabbedPanelsTabGroup {
+	border-width: 1px; border-style: solid; border-color: rgb(153, 153, 153) rgb(153, 153, 153) rgb(204, 204, 204) rgb(204, 204, 204); width: 10em; height: 20em; float: left; position: relative; background-color: rgb(238, 238, 238);
+}
+* + html .VTabbedPanels .TabbedPanelsTab {
+	margin: 0px; border-top-color: currentColor; border-right-color: currentColor; border-left-color: currentColor; border-top-width: medium; border-right-width: medium; border-left-width: medium; border-top-style: none; border-right-style: none; border-left-style: none; float: none;
+}
+* + html .VTabbedPanels .TabbedPanelsTabSelected {
+	border-bottom-color: rgb(153, 153, 153); border-bottom-width: 1px; border-bottom-style: solid; background-color: rgb(238, 238, 238);
+}
+* + html .VTabbedPanels .TabbedPanelsContentGroup {
+	padding: 0px; width: 30em; height: 20em; clear: none; float: left;
+}
