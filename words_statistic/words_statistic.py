@@ -1,6 +1,7 @@
 # coding: utf-8
 import re
-txt = open('words.txt', 'r')
+file_root = 'words.txt'
+txt = open(file_root, 'r')
 # 以只读方式打开文件
 words = txt.read()
 # 读取文件内容
@@ -10,5 +11,5 @@ word_list = re.findall(r'\b\w+\b', words)
 # 匹配所有单词
 word_numb = len(word_list)
 # 统计匹配单词数
-print('there are %d words' % word_numb)
+print('There are %d words in %s.' % (word_numb, file_root))
 # 格式化输出
