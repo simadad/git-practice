@@ -1,0 +1,4 @@
+<i><b>粉丝：</b></i>
+{% for follower in blogger.Followers.all %}
+<a href='{% url "myblog:blogger" follower.id %}'><span>{{ follower }}</span></a><span> | </span>
+{% endfor %}

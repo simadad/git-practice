@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block title %}result{% endblock %}
+{% block content %}
+<div class='content'>
+<div>
+	<h1>匹配的文章</h1>
+	<div>
+		<h3>标题中的结果</h3>
+		{% for article in result.article.title %}
+		<a href='{% url "myblog:article" article.id %}'><p>{{ article }}</p></a>
+		{% endfor %}
+	</div>
+	<div>
+		<h3>内容中的结果</h3>
+		{% for article in result.article.content %}
+		<a href='{% url "myblog:article" article.id %}'><p>{{ article }}</p></a>
+		{% endfor %}
+	</div>
+</div>
+<div>
+	<h1>匹配的博主</h1>
+	<div>
+		<h3>昵称中的结果</h3>
+		{% for blogger in result.blogger.nickname %}
+		<a href='{% url "myblog:blogger" blogger.id %}'><p>{{ blogger.Nickname }}</p></a>
+		{% endfor %}
+	</div>
+	<div>
+		<h3>简介中的结果</h3>
+		{% for blogger in result.blogger.intor %}
+		<a href='{% url "myblog:blogger" blogger.id %}'><p>{{ blogger.Nickname }}</p></a>
+		{% endfor %}
+	</div>
+</div>
+<div>
+	<h1>匹配的评论</h1>
+	<div>
+		<h3>评论人中的结果</h3>
+		{% for commenter in result.commenter.author_article %}
+		<a href='{% url "myblog:article" commenter.id %}'><p>{{ commenter }}</p></a>
+		{% endfor %}
+	</div>
+	<div>
+		<h3>评论中的结果</h3>
+		{% for commenter in result.commenter.content_article %}
+		<a href='{% url "myblog:article" commenter.id %}'><p>{{ commenter }}</p></a>
+		{% endfor %}
+	</div>
+	
+</div>
+<div>
+	<h1>匹配的标签</h1>
+	{% for tag in result.tag.tag %}	
+	<a href='{% url "myblog:tag" tag.id %}'><p>{{ tag }}</p></a>
+	{% endfor %}
+</div>
+</div>
+{% endblock %}

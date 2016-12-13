@@ -1,0 +1,3 @@
+{% for tag in tags %}
+	<span><a href='{% url "myblog:tag" tag.id %}?page=1'class="tag"><span>{{ tag }}</span><span><i>{{ tag.article_quantity }}</i></span></a></span>
+{% endfor %}

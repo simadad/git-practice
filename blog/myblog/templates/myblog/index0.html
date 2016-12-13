@@ -48,15 +48,13 @@
 				{% endfor %}
 			</div>
 		</article>
-		<article id='cloud_title'>
+		<article>
 			<div class='section_header'><a href='{% url "search:article_tag" %}?page=1'>标签云</a></div>
 			<div class='section_content'>
-			<div id='tags'>
 			{% for tag in tags %}
-				<span><a href='{% url "myblog:tag" tag.id %}?page=1'class="tag"><span>{{ tag }}</span><span><i>{{ tag.article_quantity }}</i></span></a></span>
+				<a href='{% url "myblog:tag" tag.id %}?page=1 ' class="tag"><span>{{ tag }}</span> <span><i>{{ tag.article_quantity }}</i></span></a>
 			{% endfor %}
-			</div>
-				<a href='#cloud_title' class="tag" onclick='tag()'>...</a>
+				<a href='' class="tag">...</a>
 			</div>
 		</article>
 	</section>
@@ -83,42 +81,6 @@
 {% endblock %}
 {% block script %}
 <script>
-/*
-function getCookie(name) {
-                var cookieValue = null;
-                if (document.cookie && document.cookie != '') {
-                    var cookies = document.cookie.split(';');
-                    for (var i = 0; i < cookies.length; i++) {
-                        var cookie = cookies[i].trim();
-                        // Does this cookie string begin with the name we want?
-                        if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                            break;
-                        }
-                    }
-                }
-                return cookieValue;
-            }
-			*/
-function tag()
-{
-	var tags=document.getElementById('tags');
-	var xmlhttp = new XMLHttpRequest();
-	xmlhttp.open('GET', '{% url "myblog:ajax:tcloud" %}', true);
-	xmlhttp.onreadystatechange=function()
-	{
-		if(xmlhttp.readyState==4 && xmlhttp.status==200)
-		{
-			var tag_new = xmlhttp.responseText;
-			console.log(tag_new);
-			tags.innerHTML = tag_new;
-		}
-	}
-	
-	//var csrftoken = getCookie('csrftoken');
-	//xmlhttp.setRequestHeader('X-CSRFToken',csrftoken);
-	//xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-	xmlhttp.send();
-}
+
 </script>
 {% endblock %}

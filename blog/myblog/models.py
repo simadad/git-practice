@@ -47,7 +47,7 @@ class Article(models.Model):
     Title = models.CharField('标题', max_length=30, default='A default title')
     Author = models.ForeignKey(Blogger, on_delete=models.CASCADE, related_name='article_set')
     # Originator = models.ForeignKey(Blogger, on_delete=models.CASCADE, related_name='Article')
-    Original_id = models.IntegerField()
+    Original_id = models.IntegerField(null=True)
     Content = models.TextField('内容', max_length=5000, default='A default content')
     Like = models.IntegerField('赞', default=0)
     Pub_date = models.DateTimeField('发表时间', auto_now_add=True)

@@ -19,11 +19,10 @@
 		<i>{{ article.Pub_date }}</i>
 		<article class='article_content'>
 			<aside class='evaluate'>
-				<form method='POST'>
-				{% csrf_token %}
-					<button type="submit" name='like' value='A'>赞</button>
-					<label name='like'>{{ article.Like }}</label>
-				</form>
+				
+					<button type="submit" name='like' value='A' onclick='like()'>赞</button>
+					<label name='like' id='article_like'>{{ article.Like }}</label>
+			
 			</aside>
 			{% if user.id == article.Author.id %}
 			<aside class='editor'>
@@ -62,26 +61,85 @@
 	<section class='commenter'>
 		<article class='commenter_show'>
 			<h4>评论</h4>
+			<div id ='commenter'>
 			{% for commenter in article.commenter_set.all %}
 				<p>{{ commenter.Author }}: {{ commenter }} -- {{ commenter.Pub_date }}</p><hr />
 			{% endfor %}
+			</div>
 		</article>
 		<article class='commenter_add'>
 			<h4>添加评论</h4>
-			<form method='POST'>
-			{% csrf_token %}
-				<div>
-					<label>您的昵称：</label>
-					<input type='text' name='author' placeholder='请输入您的昵称' required='required'></input>
-				</div>
-				<div>
-					<label>您的评论：</label>
-					<textarea name='commenter' placeholder='请输入您的评论' required='required'></textarea>
-				</div>
-				<input type='submit' value='提交'></input>
-			</form>
+			<div>
+				<label>您的昵称：</label>
+				<input type='text' name='author' placeholder='请输入您的昵称' required='required' id='comm_nick'></input>
+			</div>
+			<div>
+				<label>您的评论：</label>
+				<textarea name='commenter' placeholder='请输入您的评论' required='required' id='comm_cont'></textarea>
+			</div>
+			<button onclick='commenter()'>提交</button>		
 		</article>
 	</section>
 	<hr />
 </div>
+{% endblock %}
+{% block script %}
+<script type='text/javascript'>
+function like()
+{
+	var xmlhttp=new XMLHttpRequest();
+	xmlhttp.onreadystatechange=function()
+	{
+		if (xmlhttp.readyState==4 && xmlhttp.status==200)
+		{
+			console.log(xmlhttp)
+			document.getElementById('article_like').innerHTML=xmlhttp.responseText;
+		}
+	}
+	xmlhttp.open('GET','{% url "myblog:ajax:like" %}?article_id={{ article.id }}',true)
+	xmlhttp.send()
+}
+function getCookie(name) {
+                var cookieValue = null;
+                if (document.cookie && document.cookie != '') {
+                    var cookies = document.cookie.split(';');
+                    for (var i = 0; i < cookies.length; i++) {
+                        var cookie = cookies[i].trim();
+                        // Does this cookie string begin with the name we want?
+                        if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+function commenter()
+{
+	var comm_nick = document.getElementById('comm_nick').value;
+	var comm_cont = document.getElementById('comm_cont').value;
+	var comm_arti = {{ article.id }};
+	var commenter = document.getElementById('commenter');
+	var para = document.createElement('p');
+	console.log(comm_arti);
+	commenter.appendChild(para);
+	var xmlhttp = new XMLHttpRequest();
+	xmlhttp.open('POST', '{% url "myblog:ajax:commenter" %}', true);
+	xmlhttp.onreadystatechange=function()
+	{	
+		if(xmlhttp.readyState==4 && xmlhttp.status==200)
+		{
+			//var comm_date=xmlhttp.responseText;
+			var comm_add = xmlhttp.responseText;
+			//para.innerHTML=comm_nick+': '+comm_cont+'--'+comm_date;
+			para.innerHTML = comm_add;
+			//commenter.appendChild(comm_add);
+		}
+	}
+	var csrftoken = getCookie('csrftoken');
+	xmlhttp.setRequestHeader('X-CSRFToken',csrftoken);
+	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	xmlhttp.send('comm_nick='+comm_nick+'&comm_cont='+comm_cont+'&comm_arti='+comm_arti);
+}
+</script>
 {% endblock %}

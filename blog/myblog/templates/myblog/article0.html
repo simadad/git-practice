@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% block link %}
+	{% load static %}
+	<link rel='stylesheet' type='text/css' href="{% static 'myblog/article.css' %}" />
+	<script type='text/javascript'>
+	function like()
+	{
+	var xmlhttp=new XMLHttpRequest();
+	xmlhttp.onreadystatechange=function()
+		{
+		if (xmlhttp.readyState==4 && xmlhttp.status==200)
+			{
+			document.getElementById('article_like').innerHTML=xmlhttp.responseText;
+			}
+		}
+	xmlhttp.open('GET','{% url "myblog:ajax_like" %}?article_id={{ article.id }}',true)
+	xmlhttp.send()
+	}
+	</script>
+{% endblock %}
+{% block title %}Article{% endblock %}
+{% block content %}
+<div class='content'>
+	<section class='article'>
+		<article class='article_title'>
+			{% if article.id == original.id %}
+			<span>【原创】</span>
+			{% else %}
+			<span>【转载】</span>
+			{% endif %}
+			<h2>{{ article }}</h2>
+			<b>--by:<a href='{% url "myblog:blogger" article.Author.id %}'>{{ article.Author }}</a></b>
+		</article>
+		<i>{{ article.Pub_date }}</i>
+		<article class='article_content'>
+			<aside class='evaluate'>
+				
+					<button type="submit" name='like' value='A' onclick='like()'>赞</button>
+					<label name='like' id='article_like'>{{ article.Like }}</label>
+			
+			</aside>
+			{% if user.id == article.Author.id %}
+			<aside class='editor'>
+				<a href='{% url "myblog:editor" %}?user_id={{ user.id }}&article_id={{ article.id }}'><button>编辑</button></a>
+			</aside>
+			<aside class='editor'>
+				<form method='POST'>
+				{% csrf_token %}
+					<input type='submit' value='删除'></input>
+					<input type='hidden' name='deleted_id' value='{{ article.id }}'></input>
+					<input type='hidden' name='blogger_id' value='{{ user.id }}'></input>
+				</form>
+			</aside>
+			{% else %}
+			<aside>
+				<a href='{% url "myblog:reprint" %}?user_id={{ user.id }}&article_id={{ article.id }}'><button>转载</button></a>
+			</aside>
+			{% endif %}
+			<p>
+				<p>
+					<span>*原创保护* 此文为</span>
+					<span><a href='{% url "myblog:blogger" original.Author.id %}'> {{ original.Author }} </a></span>
+					<span>原创. </span>
+					<span><a href='{% url "myblog:article" original.id %}' target='_blank'>*点击查看原文*</a></span>
+				</p>
+				<textarea readonly='readonly' style='overflow:hidden' rows='50'>{{ article.Content }}</textarea>
+			</p>
+			<aside class='tag'>
+				<span>标签：</span>
+				{% for tag in article.tag_set.all %}
+					<a href='{% url "myblog:tag" tag.id %}?page=1 '><button>{{ tag }}</button></a></button>{% if not forloop.last %}<span> | </span>{% endif %}
+				{% endfor %}
+			</aside>
+		</article>
+	</section>
+	<section class='commenter'>
+		<article class='commenter_show'>
+			<h4>评论</h4>
+			{% for commenter in article.commenter_set.all %}
+				<p>{{ commenter.Author }}: {{ commenter }} -- {{ commenter.Pub_date }}</p><hr />
+			{% endfor %}
+		</article>
+		<article class='commenter_add'>
+			<h4>添加评论</h4>
+			<form method='POST'>
+			{% csrf_token %}
+				<div>
+					<label>您的昵称：</label>
+					<input type='text' name='author' placeholder='请输入您的昵称' required='required'></input>
+				</div>
+				<div>
+					<label>您的评论：</label>
+					<textarea name='commenter' placeholder='请输入您的评论' required='required'></textarea>
+				</div>
+				<input type='submit' value='提交'></input>
+			</form>
+		</article>
+	</section>
+	<hr />
+</div>
+{% endblock %}

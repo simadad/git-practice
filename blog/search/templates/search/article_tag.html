@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block title %}search{% endblock %}
+{% block content %}
+<div class='content'>
+<section class='list_section'>
+	<div class='section_header'><a>标签云</a></div>
+	<article class='section_content'>
+		{% for tag in tags %}
+		<details class='single_content'>
+			<summary class='list_title'><a>{{ tag }} {{ tag.article_quantity }}</a></summary>
+			<div class='list_content'>
+			{% for article in tag.Article.all|slice:'5' %}
+				<p><a href='#{{ article.id }} '>{{ article }}</a></p>
+			{% endfor %}
+				<p><a href='{% url "myblog:tag" tag.id %}?page=1'>...</a></p>
+			</div>
+		</details>
+		{% endfor %}
+	</article>
+	<div class='page_bar'>
+		<span><a href='{% url "search:article_tag" %}?page=1'>首  页</a></span>
+		{% if page > 1 %}
+		<span><a href='{% url "search:article_tag" %}?page={{ page|add:-1 }}'>上一页</a></span>
+		{% endif %}
+		{% if page < pages %}
+		<span><a href='{% url "search:article_tag" %}?page={{ page|add:1 }}'>下一页</a></span>
+		{% endif %}
+		<span><a href='{% url "search:article_tag" %}?page={{ pages }}'>尾  页</a></span>
+	</div>
+</section>
+<section class='content_section'>
+	<div class='section_header'><a>文章摘要</a></div>
+	<article class='section_content'>
+	{% for tag in tags %}
+		{% for article in tag.Article.all|slice:'5' %}
+		<div class='single_content' id='{{ article.id }}'>
+			<div class='content_title'><a href='{% url "myblog:article" article.id %}'>{{ article }}</a></div>
+			<p><textarea readonly='readonly' style='overflow:hidden' cols='100' rows='20'>{{ article.Content }}</textarea></p>
+		</div>
+		{% endfor %}
+	{% endfor %}
+	</article>
+</section>
+</div>
+{% endblock %}

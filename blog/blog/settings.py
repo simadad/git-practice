@@ -91,7 +91,7 @@ DATABASES = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'xgh',
+        'NAME': 'blog',
         'USER': 'root',
         'PASSWORD': 'xgh19920520',
         'HOST': '',

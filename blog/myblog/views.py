@@ -6,9 +6,10 @@ from django import forms
 from PIL import Image
 from random import randrange
 from math import ceil
-
+from django.http import HttpResponse, JsonResponse
 
 # Create your views here.
+tag_num = 10
 
 
 def blogger_delete(delete_id):
@@ -23,14 +24,7 @@ def blogger_delete(delete_id):
 def index(request):
     article_new = Article.objects.all().order_by('-Pub_date')[:5]
     article_like = Article.objects.all().order_by('-Like')[:5]
-    '''
-    class TagCloud(Tag):
-        def __init__(self):
-            Tag.__init__(self)
-            self.num = len(self.Article)
-    '''
     tag_all = Tag.objects.all().order_by('id')
-    tag_num = 10
     orders = [randrange(0, len(tag_all)) for i in range(tag_num)]
     tags = map(lambda x: tag_all[x], orders)
 
@@ -56,6 +50,7 @@ def article(request, article_id):
         elif 'like' in request.POST:
             article_data.Like += 1
             article_data.save()
+            return
         elif 'deleted_id' in request.POST:
             deleted_id = request.POST['deleted_id']
             blogger_id = request.POST['blogger_id']
@@ -79,12 +74,7 @@ def article(request, article_id):
 def blogger(request, blogger_id):
     blogger_data = get_object_or_404(Blogger, id=blogger_id)
     if request.method == 'POST':
-        if 'article_deleted_id' in request.POST:
-            article_id = request.POST['article_deleted_id']
-            article_deleted = get_object_or_404(Article, id=article_id)
-            article_deleted.Status = False
-            article_deleted.save()
-        elif 'blogger_delete_id' in request.POST:
+        if'blogger_delete_id' in request.POST:
             blogger_id = request.POST['blogger_delete_id']
             blogger_delete(blogger_id)
             return redirect('/accounts/logout')
@@ -213,7 +203,7 @@ def blogger_editor(request, blogger_id):
         else:
             favicon = blogger_data.Favicon
 
-        if nickname and email and gender and age and intro:
+        if nickname and gender and age:
             blogger_data.Nickname = nickname
             blogger_data.User.email = email
             blogger_data.Gender = gender
@@ -253,3 +243,56 @@ def reprint(request):                                        # TODO 重复转载
     tag_reprint.Article.add(reprint_article)
     return redirect('/blog/article/%d' % reprint_article.id)
 
+
+def ajax_like(request):
+    article_id = request.GET.get('article_id')
+    article_like = get_object_or_404(Article, id=article_id)
+    article_like.Like += 1
+    article_like.save()
+    return HttpResponse(article_like.Like)
+    # return JsonResponse('like', 10)
+
+
+def ajax_commenter(request):
+    comm_nick = request.POST.get('comm_nick')
+    comm_cont = request.POST.get('comm_cont')
+    comm_arti = request.POST.get('comm_arti')
+    print comm_arti
+    arti = get_object_or_404(Article, id=comm_arti)
+    commenter = Commenter.objects.create(
+        Article=arti,
+        Author=comm_nick,
+        Content=comm_cont,
+    )
+    # return HttpResponse(commenter.Pub_date)
+    return HttpResponse(render(request, 'ajax/commenter.html', {
+        'commenter': commenter
+    }))
+
+
+def ajax_tag_cloud(request):
+    tag_all = Tag.objects.all().order_by('id')
+    orders = [randrange(0, len(tag_all)) for i in range(tag_num)]
+    tags = map(lambda x: tag_all[x], orders)
+    return HttpResponse(render(request, 'ajax/cloud.html', {
+        'tags': tags
+    }))
+
+
+def ajax_article_del(request):
+    article_id = request.GET.get('id')
+    article_to_del = get_object_or_404(Article, id=article_id)
+    article_to_del.Status = False
+    article_to_del.save()
+
+
+def ajax_follow(request):
+    user_id = request.GET.get('user_id')
+    blogger_id = request.GET.get('blogger_id')
+    user_data = get_object_or_404(Blogger, id=user_id)
+    blogger_data = get_object_or_404(Blogger, id=blogger_id)
+    blogger_data.Followers.add(user_data)
+    blogger_data.save()
+    return HttpResponse(render(request, 'ajax/follow.html', {
+        'blogger': blogger_data
+    }))

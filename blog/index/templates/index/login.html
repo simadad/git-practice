@@ -1,9 +1,31 @@
 <h1><a href='{% url "myblog:index" %}'>Welcome To My Blog!</a></h1>
 <form method="POST" action="{% url 'index:login' %}">
 {% csrf_token %}
-	<label>用户名：</label>
-	<input type="text" name="username" placeholder='请输入昵称' required='required' ></input>
-	<label>密码：</label>
-	<input type="password" name="password" placeholder='请输入密码' required='required' ></input>
+	<div>
+		<label>用户名：</label>
+		<input type="text" name="username" placeholder='请输入昵称' required='required' onblur='u_long(this.value)'></input>
+		<label id='u_long' hidden='hidden'>用户名太长</label>
+	</div>
+	<div>
+		<label>密 码：</label>
+		<input type="password" name="password" placeholder='请输入密码' required='required' onblur='p_short(this.value)'></input>
+		<label id='p_short' hidden='hidden'>密码太短</label>
+	</div>
 	<input type="submit" value="登录" />
 </form>
+<script type='text/javascript'>
+function u_long(str)
+{
+if(str.length>10)
+{
+	document.getElementById('u_long').hidden=undefined;
+}
+}
+function p_short(str)
+{
+if(str.length<5)
+{
+	document.getElementById('p_short').hidden=undefined;
+}
+}
+</script>

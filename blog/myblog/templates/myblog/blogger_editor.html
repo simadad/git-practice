@@ -14,7 +14,7 @@
 		</article>
 		<article>
 			<i><b>昵称：</b></i>
-			<input type='text' name='nickname' value='{{ blogger.Nickname }}' placeholder='昵称'></input>
+			<input type='text' name='nickname' value='{{ blogger.Nickname }}' placeholder='昵称' required='required'></input>
 		</article>
 		<article>
 			<i><b>性别：</b></i>
@@ -70,9 +70,34 @@
 	<hr />
 	<section class='blogger_article'>
 		<i><b>文章：</b></i>
+		<div id='articles'>
 		{% for article in blogger.article_set.all %}
-		<a href='{% url "myblog:article" article.id %}'><article><h4>{{ article }} </h4></article></a><hr />
+			{% if article.Status %}
+			<article style='margin-bottom:5px;background-color:rgba(200,200,200,0.5)' id='article{{ article.id }}'>
+				{% if user.id == blogger.id %}
+				<input type='submit' value='删除' onclick='delarti({{ article.id }})'></input>
+				{% endif %}
+				<!--input type='hidden' name='article_deleted_id' value='{{ article.id }}'></input-->
+				<a href='{% url "myblog:article" article.id %}'><span>{{ article }}</span></a>
+			</article>
+			{% endif %}
 		{% endfor %}
+		</div>
+		{% if user.id == blogger.id %}
+		<a href='{% url "recycle:article_re" user.id %}'><button>回收站</button></a>
+		{% endif %}
 	</section>
 </div>
+{% endblock %}
+{% block script %}
+<script>
+function delarti(id){	
+	var articles = document.getElementById('articles');
+	var article = document.getElementById('article'+id);
+	articles.removeChild(article);
+	var xmlhttp = new XMLHttpRequest();
+	xmlhttp.open('GET', '{% url "myblog:ajax:adel" %}?id='+id, true);
+	xmlhttp.send();
+}
+</script>
 {% endblock %}

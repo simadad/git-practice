@@ -19,6 +19,15 @@
 		</span>
 	{% endif %}
 	{% block header %}{% endblock %} 
+	<script>
+	function search_check(str)	
+	{
+	if (str.length>10)
+		{
+		alert('too long!');
+		}
+	}
+	</script>
 </header>
 <hr />
 <nav>
@@ -31,7 +40,7 @@
 		{% endif %}
 		<form action='{% url "search:search_engine" %}' method='POST' >
 		{% csrf_token %}
-			<input type='text' name=search placeholder='请输入搜索关键字' required='required' />
+			<input type='text' name=search placeholder='请输入搜索关键字' required='required' onblur='search_check(this.value)' />
 			<input type='submit' />
 		</form>
 	{% endblock %}
@@ -42,5 +51,6 @@
 	{% block footer %}页脚{% endblock %}
 	<span><b><a>***感谢访问***</a></b></span>
 </footer>
+{% block script %}{% endblock %}
 </body>
 </html>
